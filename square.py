@@ -17,23 +17,18 @@ TURN_DPS = 90
 TURN_ANGLE = 250
 FORWARD_DISTANCE = 850
 
-def start(l_angle_diff, r_angle_diff):
-    
-    initial_r = BP.get_motor_encoder(RIGHT_WHEEL_PORT)
-    initial_l = BP.get_motor_encoder(LEFT_WHEEL_PORT)
-    
+def start(l_angle_target, r_angle_target, threshold=5, interval=0.5):
     while True:
-
         print("R:", BP.get_motor_status(RIGHT_WHEEL_PORT)) 
         print("L:", BP.get_motor_status(LEFT_WHEEL_PORT)) 
         
         r_angle = BP.get_motor_encoder(RIGHT_WHEEL_PORT)
         l_angle = BP.get_motor_encoder(LEFT_WHEEL_PORT)
         
-        if (math.abs(r_angle - initial_r) >= r_angle_diff or math.abs(l_angle - initial_l) >= l_angle_diff):
-            break;
+        if (math.abs(r_angle - r_angle_target) <= threshold or math.abs(l_angle - l_angle_target) <= threshold):
+            break
 
-        time.sleep(1)
+        time.sleep(interval)
 
 def turn(angle = TURN_ANGLE):   
     BP.set_motor_limits(RIGHT_WHEEL_PORT, POWER_LIMIT, TURN_DPS)
