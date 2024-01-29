@@ -13,9 +13,9 @@ POWER_LIMIT = 70
 MAX_DPS = 200
 FORWARD_DPS = 180
 TURN_DPS = 90
-
-TURN_ANGLE = 250
-FORWARD_DISTANCE = 850
+# Robot physical characteristics
+TURN_PER_DEG = 250/90
+FORWARD_PER_CM = 850/40
 
 def start(l_angle_target, r_angle_target, threshold=5, interval=0.5):
     while True:
@@ -30,7 +30,8 @@ def start(l_angle_target, r_angle_target, threshold=5, interval=0.5):
 
         time.sleep(interval)
 
-def turn(angle = TURN_ANGLE):   
+def turn(angle):   
+    angle *= TURN_PER_DEG 
     BP.set_motor_limits(RIGHT_WHEEL_PORT, POWER_LIMIT, TURN_DPS)
     BP.set_motor_limits(LEFT_WHEEL_PORT, POWER_LIMIT, TURN_DPS)
     
@@ -43,7 +44,8 @@ def turn(angle = TURN_ANGLE):
     start(L_POS - angle, R_POS + angle)
     
     
-def forward(distance = FORWARD_DISTANCE):
+def forward(distance):
+    distance *= FORWARD_PER_CM
     BP.set_motor_limits(RIGHT_WHEEL_PORT, POWER_LIMIT, MAX_DPS)
     BP.set_motor_limits(LEFT_WHEEL_PORT, POWER_LIMIT, MAX_DPS)
     
@@ -55,11 +57,20 @@ def forward(distance = FORWARD_DISTANCE):
     
     start(L_POS + distance, R_POS + distance)
     
-    
-try:
+def draw_square(size=40):
     for i in range(4):
-        forward()
-        turn()
+        forward(size)
+        turn(90)
+    
+def draw_star(size=30):
+    direction = 1
+    for i in range(5):
+        forward(direction * size)
+        turn(36)
+        direction = -direction
+
+try:
+    draw_square()
         
 except KeyboardInterrupt: # program gets interrupted by Ctrl+C on the keyboard.
     BP.reset_all()
