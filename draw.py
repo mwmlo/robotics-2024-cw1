@@ -25,7 +25,7 @@ def start(l_angle_target, r_angle_target, threshold=5, interval=0.5):
         r_angle = BP.get_motor_encoder(RIGHT_WHEEL_PORT)
         l_angle = BP.get_motor_encoder(LEFT_WHEEL_PORT)
         
-        if (math.abs(r_angle - r_angle_target) <= threshold or math.abs(l_angle - l_angle_target) <= threshold):
+        if (abs(r_angle - r_angle_target) <= threshold or abs(l_angle - l_angle_target) <= threshold):
             break
 
         time.sleep(interval)
