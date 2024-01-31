@@ -7,15 +7,14 @@ import math
 
 BP = brickpi3.BrickPi3()
 
-RIGHT_WHEEL_PORT = BP.PORT_A
-LEFT_WHEEL_PORT = BP.PORT_D
+RIGHT_WHEEL_PORT = BP.PORT_D
+LEFT_WHEEL_PORT = BP.PORT_A
 POWER_LIMIT = 70
-MAX_DPS = 200
-FORWARD_DPS = 180
+MAX_DPS = 360
 TURN_DPS = 90
 # Robot physical characteristics
-TURN_PER_DEG = 250/90
-FORWARD_PER_CM = 850/40
+TURN_PER_DEG = 267/90
+FORWARD_PER_CM = 851/40
 
 def start(l_angle_target, r_angle_target, threshold=5, interval=0.5):
     while True:
@@ -71,6 +70,7 @@ def draw_star(size=30):
 
 try:
     draw_square()
+    # forward(40)
         
 except KeyboardInterrupt: # program gets interrupted by Ctrl+C on the keyboard.
     BP.reset_all()
