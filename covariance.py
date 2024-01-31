@@ -9,3 +9,10 @@ cov_yy = mean([(y - mean_y) ** 2 for _, y in locations])
 cov_xy = mean([(x - mean_x) * (y - mean_y) for x, y in locations])
 
 print(cov_xx, cov_xy, cov_xy, cov_yy)
+"""
+Covariance matrix:
+
+[[ 1.8259999999999998, -0.7939999999999999],
+ [-0.7939999999999999,  0.9420000000000001]]
+
+"""
