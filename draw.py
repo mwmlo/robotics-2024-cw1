@@ -11,9 +11,9 @@ RIGHT_WHEEL_PORT = BP.PORT_A
 LEFT_WHEEL_PORT = BP.PORT_D
 POWER_LIMIT = 70
 MAX_DPS = 360
-TURN_DPS = 180
+TURN_DPS = 230
 # Robot physical characteristics
-TURN_PER_DEG = 269/90
+TURN_PER_DEG = 272/90
 FORWARD_PER_CM = 851/40
 
 def start(l_angle_target, r_angle_target, threshold=5, interval=0.5):
@@ -59,7 +59,9 @@ def forward(distance):
 def draw_square(size=40):
     for i in range(4):
         forward(size)
+        time.sleep(0.5)
         turn(90)
+        time.sleep(0.5)
     
 def draw_star(size=30):
     direction = 1
@@ -71,6 +73,7 @@ def draw_star(size=30):
 try:
     draw_square()
     # forward(40)
+    # turn(90)
         
 except KeyboardInterrupt: # program gets interrupted by Ctrl+C on the keyboard.
     BP.reset_all()
