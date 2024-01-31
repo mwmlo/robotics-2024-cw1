@@ -7,13 +7,13 @@ import math
 
 BP = brickpi3.BrickPi3()
 
-RIGHT_WHEEL_PORT = BP.PORT_D
-LEFT_WHEEL_PORT = BP.PORT_A
+RIGHT_WHEEL_PORT = BP.PORT_A
+LEFT_WHEEL_PORT = BP.PORT_D
 POWER_LIMIT = 70
 MAX_DPS = 360
-TURN_DPS = 90
+TURN_DPS = 180
 # Robot physical characteristics
-TURN_PER_DEG = 267/90
+TURN_PER_DEG = 269/90
 FORWARD_PER_CM = 851/40
 
 def start(l_angle_target, r_angle_target, threshold=5, interval=0.5):
