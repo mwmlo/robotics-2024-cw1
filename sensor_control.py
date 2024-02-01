@@ -19,11 +19,12 @@ BP.set_sensor_type(R_TOUCH_PORT, BP.SENSOR_TYPE.TOUCH)
 BP.set_sensor_type(BP.PORT_1, BP.SENSOR_TYPE.NXT_ULTRASONIC)
 
 def to_speed(vl_target, vr_target, threshold=5, interval=0.02):
+    BP.set_motor_dps(LEFT_WHEEL_PORT, vl_target)
+    BP.set_motor_dps(RIGHT_WHEEL_PORT, vr_target)
     while True:
         vl = BP.get_motor_status(LEFT_WHEEL_PORT)[3]
         vr = BP.get_motor_status(RIGHT_WHEEL_PORT)[3]
-        
-        if (math.abs(vl - vl_target) <= threshold or math.abs(vr - vr_target) <= threshold):
+        if (abs(vl - vl_target) <= threshold or abs(vr - vr_target) <= threshold):
             break
 
         time.sleep(interval)
@@ -32,22 +33,25 @@ def wall_follow(duration):
     to_speed(SPEED, SPEED)
     t = time.time()
     end = t + duration
-    while t < duration:
+    while t < end:
         wall_speed_adjust(SPEED, 0.5)
-        time.sleep(0.2)
-        t += 0.05
+        time.sleep(0.5)
+        t += 0.5
+    BP.reset_all()
 
 def wall_speed_adjust(target, k):
     diff = BP.get_sensor(SONAR_PORT) - target
     vl = BP.get_motor_status(LEFT_WHEEL_PORT)[3]
     vr = BP.get_motor_status(RIGHT_WHEEL_PORT)[3]
     vc = (vl+vr)/2
+    print("Left right speed", vl, "and", vr)
     vl = vc - k*diff
     vr = vc + k*diff
+    print("Left right target speed", vl, "and", vr)
     to_speed(vl, vr)
 
 try:
-    wall_follow(5)
+    wall_follow(10)
         
 except KeyboardInterrupt: # program gets interrupted by Ctrl+C on the keyboard.
     BP.reset_all()
