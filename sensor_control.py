@@ -8,7 +8,7 @@ import math
 BP = brickpi3.BrickPi3() # Create an instance of the BrickPi3 class. BP will be the BrickPi3 object.
 L_TOUCH_PORT = BP.PORT_1
 R_TOUCH_PORT = BP.PORT_2
-SONAR_PORT = BP.PORT3
+SONAR_PORT = BP.PORT_1
 RIGHT_WHEEL_PORT = BP.PORT_A
 LEFT_WHEEL_PORT = BP.PORT_D
 SPEED = 360
