@@ -144,7 +144,7 @@ def draw_star(size=30):
         direction = -direction
 
 try:
-    v = Visualize(0.5,0.5,deg_to_rad(3),1)
+    v = Visualize(0.5,deg_to_rad(2),deg_to_rad(5),100)
     v.draw_square()
     # forward(40)
     # turn(90)
