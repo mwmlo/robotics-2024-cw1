@@ -17,7 +17,7 @@ TURN_PER_DEG = 272/90
 FORWARD_PER_CM = 851/40
 # Drawing constants
 CENTER = (200, 600)
-GRID_SCALE_FACTOR = 50
+GRID_SCALE_FACTOR = 10
 NEGATIVE_AXIS_LEN = 100
 POSITIVE_AXIS_LEN = 500
 
@@ -56,7 +56,7 @@ class Visualize:
 
     def draw_particles(self):
         particle_coords = [p.draw() for p in self.particles]
-        gparticle_coords = [(self.gx(x), self.gy(y), rad_to_deg(t)) for (x,y,t) in particle_coords]
+        gparticle_coords = [(self.gx(x), self.gy(y), t) for (x,y,t) in particle_coords]
         print("drawParticles:"+str(gparticle_coords))
 
     def turn(self, ang):  
