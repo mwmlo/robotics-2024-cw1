@@ -17,8 +17,15 @@ TURN_PER_DEG = 272/90
 FORWARD_PER_CM = 851/40
 # Drawing constants
 CENTER = (200, 600)
+GRID_SCALE_FACTOR = 50
 NEGATIVE_AXIS_LEN = 100
 POSITIVE_AXIS_LEN = 500
+
+def deg_to_rad(deg):
+    return deg/180*math.pi
+
+def rad_to_deg(rad):
+    return rad/math.pi*180
 
 class Visualize:
     def __init__(self, x_std, y_std, theta_std, n_particles):
@@ -32,10 +39,10 @@ class Visualize:
         self.draw_axes()
 
     def gx(self, x):
-        return CENTER[0] + x
+        return CENTER[0] + x*GRID_SCALE_FACTOR
     
     def gy(self, y):
-        return CENTER[1] - y
+        return CENTER[1] - y*GRID_SCALE_FACTOR
 
     def draw_axes(self):
         x_axis = (-NEGATIVE_AXIS_LEN, 0, POSITIVE_AXIS_LEN, 0)
@@ -49,7 +56,7 @@ class Visualize:
 
     def draw_particles(self):
         particle_coords = [p.draw() for p in self.particles]
-        gparticle_coords = [(self.gx(x), self.gy(y), t) for (x,y,t) in particle_coords]
+        gparticle_coords = [(self.gx(x), self.gy(y), rad_to_deg(t)) for (x,y,t) in particle_coords]
         print("drawParticles:"+str(gparticle_coords))
 
     def turn(self, ang):  
@@ -65,9 +72,10 @@ class Visualize:
         BP.set_motor_position(LEFT_WHEEL_PORT, L_POS - angle)
         
         #start(L_POS - angle, R_POS + angle)
+        rad = deg_to_rad(ang)
         for p in self.particles:
             g = random.gauss(0, self.theta_std)
-            p.update_rot(ang, g)
+            p.update_rot(rad, g)
     
     def forward(self, dist):
         self.draw_particles()
@@ -136,7 +144,7 @@ def draw_star(size=30):
         direction = -direction
 
 try:
-    v = Visualize(2,2,2, 100)
+    v = Visualize(0.5,0.5,deg_to_rad(3),1)
     v.draw_square()
     # forward(40)
     # turn(90)
