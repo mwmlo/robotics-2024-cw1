@@ -14,7 +14,7 @@ MAX_DPS = 360
 TURN_DPS = 230
 # Robot physical characteristics
 TURN_PER_DEG = 272/90
-FORWARD_PER_CM = 851/40
+FORWARD_PER_CM = 857/40
 # Drawing constants
 CENTER = (200, 600)
 GRID_SCALE_FACTOR = 10
@@ -71,7 +71,7 @@ class Visualize:
         BP.set_motor_position(RIGHT_WHEEL_PORT, R_POS + angle)
         BP.set_motor_position(LEFT_WHEEL_PORT, L_POS - angle)
         
-        #start(L_POS - angle, R_POS + angle)
+        start(L_POS - angle, R_POS + angle)
         rad = deg_to_rad(ang)
         for p in self.particles:
             g = random.gauss(0, self.g_std)
@@ -89,7 +89,7 @@ class Visualize:
         BP.set_motor_position(RIGHT_WHEEL_PORT, R_POS + distance)
         BP.set_motor_position(LEFT_WHEEL_PORT, L_POS + distance)
         
-        #start(L_POS + distance, R_POS + distance)
+        start(L_POS + distance, R_POS + distance)
         for p in self.particles:
             e = random.gauss(0, self.e_std)
             f = random.gauss(0, self.f_std)
@@ -102,6 +102,16 @@ class Visualize:
                 time.sleep(0.5)
             self.turn(90)
             time.sleep(0.5)
+            
+    def draw_star(self,size=30):
+        direction = 1
+        for i in range(5):
+            self.forward(direction * size)
+            time.sleep(0.5)
+            self.turn(36)
+            time.sleep(0.5)
+            direction = -direction        
+    
 
 class Particle:
     def __init__(self, x, y, theta, weight):
@@ -135,17 +145,12 @@ def start(l_angle_target, r_angle_target, threshold=5, interval=0.5):
             break
 
         time.sleep(interval)
-    
-def draw_star(size=30):
-    direction = 1
-    for i in range(5):
-        forward(direction * size)
-        turn(36)
-        direction = -direction
+
 
 try:
-    v = Visualize(0.5,deg_to_rad(2),deg_to_rad(5),100)
+    v = Visualize(0.2,deg_to_rad(1),deg_to_rad(3),100)
     v.draw_square()
+    #v.draw_star(10)
     # forward(40)
     # turn(90)
         
