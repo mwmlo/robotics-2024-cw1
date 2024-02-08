@@ -15,15 +15,24 @@ TURN_DPS = 230
 # Robot physical characteristics
 TURN_PER_DEG = 272/90
 FORWARD_PER_CM = 851/40
+# Drawing constants
+NEGATIVE_AXIS_LEN = 100
+POSITIVE_AXIS_LEN = 500
 
 class Visualize:
     def __init__(self, x_std, y_std, theta_std, n_particles):
+        # standard deviations
         self.x_std = x_std
         self.y_std = y_std
         self.theta_std = theta_std
+        # generate list of particles
         self.particles = [Particle(0,0,0, 1/n_particles) for p in range(n_particles)]
-        x_axis = (-10, 0, 50, 0)
-        y_axis = (0, -10, 0, 50)
+        # draw axes
+        self.draw_axes()
+
+    def draw_axes(self):
+        x_axis = (-NEGATIVE_AXIS_LEN, 0, POSITIVE_AXIS_LEN, 0)
+        y_axis = (0, -NEGATIVE_AXIS_LEN, 0, POSITIVE_AXIS_LEN)
         print("drawLine:" + str((x_axis)))
         print("drawLine:" + str((y_axis)))
 
