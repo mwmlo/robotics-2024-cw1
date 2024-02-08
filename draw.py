@@ -30,8 +30,9 @@ class Visualize:
     def draw_particles(self):
         print("drawParticles:"+str([p.draw() for p in self.particles]))
 
-    def turn(self, angle):   
-        angle *= TURN_PER_DEG 
+    def turn(self, ang):  
+        self.draw_particles()
+        angle = ang * TURN_PER_DEG 
         BP.set_motor_limits(RIGHT_WHEEL_PORT, POWER_LIMIT, TURN_DPS)
         BP.set_motor_limits(LEFT_WHEEL_PORT, POWER_LIMIT, TURN_DPS)
         
@@ -44,11 +45,11 @@ class Visualize:
         start(L_POS - angle, R_POS + angle)
         for p in self.particles:
             g = random.gauss(0, self.theta_std)
-            p.update_line(angle, g)
+            p.update_line(ang, g)
     
-    
-    def forward(self, distance):
-        distance *= FORWARD_PER_CM
+    def forward(self, dist):
+        self.draw_particles()
+        distance = dist * FORWARD_PER_CM
         BP.set_motor_limits(RIGHT_WHEEL_PORT, POWER_LIMIT, MAX_DPS)
         BP.set_motor_limits(LEFT_WHEEL_PORT, POWER_LIMIT, MAX_DPS)
         
@@ -62,7 +63,7 @@ class Visualize:
         for p in self.particles:
             e = random.gauss(0, self.x_std)
             f = random.gauss(0, self.y_std)
-            p.update_line(distance, e, f)
+            p.update_line(dist, e, f) 
 
     def draw_square(self, size=40):
         for i in range(4):
@@ -114,7 +115,7 @@ def draw_star(size=30):
 
 try:
     v = Visualize(2,2,2, 100)
-    draw_square()
+    v.draw_square()
     # forward(40)
     # turn(90)
         
