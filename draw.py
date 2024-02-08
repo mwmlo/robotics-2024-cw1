@@ -16,7 +16,7 @@ TURN_DPS = 230
 TURN_PER_DEG = 272/90
 FORWARD_PER_CM = 851/40
 # Drawing constants
-CENTER = (200, 200)
+CENTER = (200, 600)
 NEGATIVE_AXIS_LEN = 100
 POSITIVE_AXIS_LEN = 500
 
@@ -64,10 +64,10 @@ class Visualize:
         BP.set_motor_position(RIGHT_WHEEL_PORT, R_POS + angle)
         BP.set_motor_position(LEFT_WHEEL_PORT, L_POS - angle)
         
-        start(L_POS - angle, R_POS + angle)
+        #start(L_POS - angle, R_POS + angle)
         for p in self.particles:
             g = random.gauss(0, self.theta_std)
-            p.update_line(ang, g)
+            p.update_rot(ang, g)
     
     def forward(self, dist):
         self.draw_particles()
@@ -81,7 +81,7 @@ class Visualize:
         BP.set_motor_position(RIGHT_WHEEL_PORT, R_POS + distance)
         BP.set_motor_position(LEFT_WHEEL_PORT, L_POS + distance)
         
-        start(L_POS + distance, R_POS + distance)
+        #start(L_POS + distance, R_POS + distance)
         for p in self.particles:
             e = random.gauss(0, self.x_std)
             f = random.gauss(0, self.y_std)
