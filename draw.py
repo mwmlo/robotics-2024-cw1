@@ -16,6 +16,7 @@ TURN_DPS = 230
 TURN_PER_DEG = 272/90
 FORWARD_PER_CM = 851/40
 # Drawing constants
+CENTER = (200, 200)
 NEGATIVE_AXIS_LEN = 100
 POSITIVE_AXIS_LEN = 500
 
@@ -30,14 +31,26 @@ class Visualize:
         # draw axes
         self.draw_axes()
 
+    def gx(self, x):
+        return CENTER[0] + x
+    
+    def gy(self, y):
+        return CENTER[1] - y
+
     def draw_axes(self):
         x_axis = (-NEGATIVE_AXIS_LEN, 0, POSITIVE_AXIS_LEN, 0)
         y_axis = (0, -NEGATIVE_AXIS_LEN, 0, POSITIVE_AXIS_LEN)
-        print("drawLine:" + str((x_axis)))
-        print("drawLine:" + str((y_axis)))
+        self.draw_line(x_axis)
+        self.draw_line(y_axis)
+
+    def draw_line(self, line_coords):
+        (x0,y0,x1,y1) = line_coords
+        print("drawLine:" + str((self.gx(x0), self.gy(y0), self.gx(x1), self.gy(y1))))
 
     def draw_particles(self):
-        print("drawParticles:"+str([p.draw() for p in self.particles]))
+        particle_coords = [p.draw() for p in self.particles]
+        gparticle_coords = [(self.gx(x), self.gy(y), t) for (x,y,t) in particle_coords]
+        print("drawParticles:"+str(gparticle_coords))
 
     def turn(self, ang):  
         self.draw_particles()
