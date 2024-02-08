@@ -28,11 +28,11 @@ def rad_to_deg(rad):
     return rad/math.pi*180
 
 class Visualize:
-    def __init__(self, x_std, y_std, theta_std, n_particles):
+    def __init__(self, e_std, f_std, g_std, n_particles):
         # standard deviations
-        self.x_std = x_std
-        self.y_std = y_std
-        self.theta_std = theta_std
+        self.e_std = e_std
+        self.f_std = f_std
+        self.g_std = g_std
         # generate list of particles
         self.particles = [Particle(0,0,0, 1/n_particles) for p in range(n_particles)]
         # draw axes
@@ -74,7 +74,7 @@ class Visualize:
         #start(L_POS - angle, R_POS + angle)
         rad = deg_to_rad(ang)
         for p in self.particles:
-            g = random.gauss(0, self.theta_std)
+            g = random.gauss(0, self.g_std)
             p.update_rot(rad, g)
     
     def forward(self, dist):
@@ -91,8 +91,8 @@ class Visualize:
         
         #start(L_POS + distance, R_POS + distance)
         for p in self.particles:
-            e = random.gauss(0, self.x_std)
-            f = random.gauss(0, self.y_std)
+            e = random.gauss(0, self.e_std)
+            f = random.gauss(0, self.f_std)
             p.update_line(dist, e, f) 
 
     def draw_square(self, size=40):
