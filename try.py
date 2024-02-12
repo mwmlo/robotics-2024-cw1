@@ -1,21 +1,32 @@
-class Visualize:
-    def __init__(self, x_std, y_std, theta_std, n_particles):
-        self.x_std = x_std
-        self.y_std = y_std
-        self.theta_std = theta_std
-        self.particles = [Particle(0,0,0, 1/n_particles) for p in range(n_particles)]
+import numpy as np
 
-    def draw_particles(self):
-        print("drawParticles:"+str([p.draw() for p in self.particles]))
-class Particle:
-    def __init__(self, x, y, theta, weight):
-        self.x = x
-        self.y = y
-        self.theta = theta
-        self.weight = weight
+def rad_simplify(rad):
+    rad %= (2*np.pi)
+    if rad > np.pi:
+        rad -= 2*np.pi
+    
+    return rad
 
-    def draw(self):
-        return (self.x, self.y, self.theta)
+def rad_to_deg(rad):
+    return rad/np.pi*180
 
-v = Visualize(0,0,0, 100)
-v.draw_particles()
+def ang_diff(f, t):
+    diff = t - rad_simplify(f)
+    diff = rad_simplify(diff)
+    return rad_to_deg(diff)
+
+def direction(dx, dy):
+    if dx == 0:
+        if dy >= 0:
+            return np.pi/2
+        else:
+            return -np.pi/2
+    r = np.arctan(dy/dx)
+    if r > 0 and dy < 0:
+        return r-np.pi
+    elif r < 0 and dy > 0:
+        return r+np.pi
+    return r
+    
+print(direction(-1,-1))
+
