@@ -3,7 +3,7 @@ from __future__ import division
 
 import time     # import the time library for the sleep function
 import brickpi3 # import the BrickPi3 drivers
-import random, numpy as np
+import math, random
 
 BP = brickpi3.BrickPi3()
 
@@ -22,36 +22,12 @@ NEGATIVE_AXIS_LEN = 100
 POSITIVE_AXIS_LEN = 500
 NUMBER_OF_PARTICLES = 100
 
+
 def deg_to_rad(deg):
-    return deg/180*np.pi
+    return deg/180*math.pi
 
 def rad_to_deg(rad):
-    return rad/np.pi*180
-
-def direction(dx, dy):
-    if dx == 0:
-        if dy >= 0:
-            return np.pi/2
-        else:
-            return -np.pi/2
-    r = np.arctan(dy/dx)
-    if r > 0 and dy < 0:
-        return r-np.pi
-    elif r < 0 and dy > 0:
-        return r+np.pi
-    return r
-
-def rad_simplify(rad):
-    rad %= (2*np.pi)
-    if rad > np.pi:
-        rad -= 2*np.pi
-    
-    return rad
-
-def ang_diff(f, t):
-    diff = t - rad_simplify(f)
-    diff = rad_simplify(diff)
-    return rad_to_deg(diff)
+    return rad/math.pi*180
 
 class Visualize:
     def __init__(self, e_std, f_std, g_std, n_particles):
@@ -85,24 +61,8 @@ class Visualize:
         gparticle_coords = [(self.gx(x), self.gy(y), t) for (x,y,t) in particle_coords]
         print("drawParticles:"+str(gparticle_coords))
 
-    def loc_estimate(self):
-        tot_w = 0
-        locs = np.zeros(3)
-        for p in self.particles:
-            tot_w += p.weight
-            locs += p.weight * p.loc
-        mean_loc = locs/tot_w
-        return mean_loc
-    
-    def navigate(self, loc, x_targ, y_targ, draw=False):
-        vec = np.array([x_targ, y_targ]) - loc[:2]
-        distance = np.sqrt(pow(vec[0],2) + pow(vec[1],2))
-        rad = direction(vec[0], vec[1])
-        self.turn(ang_diff(loc[2], rad), draw)
-        time.sleep(0.5)
-        self.forward(distance, draw)
-
-    def turn(self, ang, draw=True):  
+    def turn(self, ang):  
+        self.draw_particles()
         angle = ang * TURN_PER_DEG 
         BP.set_motor_limits(RIGHT_WHEEL_PORT, POWER_LIMIT, TURN_DPS)
         BP.set_motor_limits(LEFT_WHEEL_PORT, POWER_LIMIT, TURN_DPS)
@@ -118,10 +78,9 @@ class Visualize:
         for p in self.particles:
             g = random.gauss(0, self.g_std)
             p.update_rot(rad, g)
-        if draw:
-            self.draw_particles()
-        
-    def forward(self, dist, draw=True):
+    
+    def forward(self, dist):
+        self.draw_particles()
         distance = dist * FORWARD_PER_CM
         BP.set_motor_limits(RIGHT_WHEEL_PORT, POWER_LIMIT, MAX_DPS)
         BP.set_motor_limits(LEFT_WHEEL_PORT, POWER_LIMIT, MAX_DPS)
@@ -137,9 +96,7 @@ class Visualize:
             e = random.gauss(0, self.e_std)
             f = random.gauss(0, self.f_std)
             p.update_line(dist, e, f) 
-        if draw:
-            self.draw_particles()
-        
+
     def draw_square(self, size=40):
         for i in range(4):
             for j in range(4):
@@ -160,19 +117,22 @@ class Visualize:
 
 class Particle:
     def __init__(self, x, y, theta, weight):
-        self.loc = np.array([x,y,theta])
+        self.x = x
+        self.y = y
+        self.theta = theta
         self.weight = weight
 
     def update_line(self, dist, e, f):
-        self.loc[0] += (dist+e) * np.cos(self.loc[2])
-        self.loc[1] += (dist+e) * np.sin(self.loc[2])
-        self.loc[2] += f
+        self.x += (dist+e) * math.cos(self.theta)
+        self.y += (dist+e) * math.sin(self.theta)
+        self.theta += f
 
     def update_rot(self, alpha, g):
-        self.loc[2] += (alpha + g)
-        
+        self.theta += alpha+g
+
     def draw(self):
-        return (self.loc[0], self.loc[1], self.loc[2])
+        return (self.x, self.y, self.theta)
+
 
 
 def start(l_angle_target, r_angle_target, threshold=5, interval=0.5):
