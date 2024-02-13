@@ -160,7 +160,7 @@ class Visualize:
 
 class Particle:
     def __init__(self, x, y, theta, weight):
-        self.loc = np.array(x,y,theta)
+        self.loc = np.array([x,y,theta])
         self.weight = weight
 
     def update_line(self, dist, e, f):
