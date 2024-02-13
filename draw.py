@@ -13,7 +13,7 @@ POWER_LIMIT = 70
 MAX_DPS = 360
 TURN_DPS = 230
 # Robot physical characteristics
-TURN_PER_DEG = 320/90
+TURN_PER_DEG = 300/90
 FORWARD_PER_CM = 1100/40
 # Drawing constants
 CENTER = (200, 600)
