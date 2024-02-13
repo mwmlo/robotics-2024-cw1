@@ -3,8 +3,7 @@ import time
 
 import numpy as np
 
-from Constants import CENTER, GRID_SCALE_FACTOR, NEGATIVE_AXIS_LEN, POSITIVE_AXIS_LEN, TURN_PER_DEG, RIGHT_WHEEL_PORT, \
-    POWER_LIMIT, TURN_DPS, LEFT_WHEEL_PORT, FORWARD_PER_CM, MAX_DPS
+from Constants import *
 from Particle import Particle
 from Utils import direction, ang_diff, deg_to_rad
 from main import BP, start

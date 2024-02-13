@@ -16,8 +16,8 @@ class Map:
             self.canvas.drawLine(wall)
 
 
-def myMap():
-    mymap = Map()
+def myMap(canvas):
+    mymap = Map(canvas)
     # Definitions of walls
     # a: O to A
     # b: A to B

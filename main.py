@@ -2,9 +2,10 @@ from __future__ import division
 from __future__ import print_function
 
 import time  # import the time library for the sleep function
+
 import brickpi3  # import the BrickPi3 drivers
 
-from Constants import RIGHT_WHEEL_PORT, LEFT_WHEEL_PORT
+from Constants import *
 from Utils import deg_to_rad
 from Visualize import Visualize
 
