@@ -9,14 +9,18 @@ import numpy as np
 from Constants import *
 from Utils import deg_to_rad, direction, ang_diff
 from Visualize import Visualize
+from likelihood import wall_distance, likelihood
+from mcl_resample import normalize, resample
+from Canvas import Canvas
+from Map import Map, myMap
 
 BP = brickpi3.BrickPi3()
 
 
 class Robot:
-
-    def __init__(self):
-        self.v = Visualize(0.2, deg_to_rad(1), deg_to_rad(3), 100)
+    def __init__(self, visualizer: Visualize, terrain: Map):
+        self.v = visualizer
+        self.terrain = terrain
 
     @staticmethod
     def start(l_angle_target, r_angle_target, threshold=5, interval=0.5):
@@ -86,13 +90,33 @@ class Robot:
             time.sleep(0.5)
             direction = -direction
 
+    def localize(self, waypoints: list[tuple], std: float, k: float):
+        (x,y) = waypoints[0]
+        self.v.particles_gen(100, x, y, 0)
+        loc = np.array([x,y,0])
+        for (x,y) in waypoints[1:]:
+            print("Heading towards point:", x,y)
+            self.navigate(loc, x, y, draw=True)
+            d_measure = None   # Sonar measure result, To be implemented...
+            for p in self.v.particles:
+                d_true = wall_distance(p.x, p.y, p.theta, self.terrain)
+                lik = likelihood(d_measure, d_true, std, k)
+                p.weight *= lik
+            normalize(self.v)
+            resample(self.v)
+            loc = self.v.estimate_location()
 
 if __name__ == "__main__":
     try:
-        robot = Robot()
+        visualizer = Visualize(0.2, deg_to_rad(1), deg_to_rad(3))
+        terrain = myMap(canvas=Canvas())
+        robot = Robot(visualizer, terrain)
         # robot.draw_star(10)
         # robot.forward(40)
         # robot.turn(90)
+        waypoints = [(84, 30),(180, 30),(180, 54),(138, 54),
+                     (138, 168),(114, 168),(114, 84),(84, 84),(84, 30)]
+        robot.localize(waypoints, 2.5, 0.05)
 
     except KeyboardInterrupt:  # program gets interrupted by Ctrl+C on the keyboard.
         BP.reset_all()

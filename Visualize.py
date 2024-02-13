@@ -8,16 +8,18 @@ from Utils import deg_to_rad
 
 
 class Visualize:
-    def __init__(self, e_std, f_std, g_std, n_particles):
+    def __init__(self, e_std, f_std, g_std):
         # standard deviations
         self.e_std = e_std
         self.f_std = f_std
         self.g_std = g_std
-        # generate list of particles
-        self.particles = [Particle(0, 0, 0, 1 / n_particles) for _ in range(n_particles)]
-        # draw axes
+       # draw axes
         self.draw_axes()
 
+    def particles_gen(self, n_particles, x, y, theta):
+        # generate list of particles
+        self.particles = [Particle(x, y, theta, 1 / n_particles) for _ in range(n_particles)]
+        
     @staticmethod
     def __gx(x):
         return CENTER[0] + x * GRID_SCALE_FACTOR
@@ -42,13 +44,10 @@ class Visualize:
         print("drawParticles:" + str(gparticle_coords))
 
     def estimate_location(self):
-        tot_w = 0
-        locs = np.zeros(3)
-        for p in self.particles:
-            tot_w += p.weight
-            locs += p.weight * p.loc
-        mean_loc = locs / tot_w
-        return mean_loc
+        locs = np.array([[p.x, p.y, p.theta] for p in self.particles])
+        weights = np.array([p.weight for p in self.particles])
+        s = locs * weights
+        return np.sum(s, axis=0)
 
     def turn(self, ang, draw):
         rad = deg_to_rad(ang)
