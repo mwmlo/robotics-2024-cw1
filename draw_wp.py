@@ -205,20 +205,20 @@ def interactive_demo():
     v = Visualize(0.2, deg_to_rad(1), deg_to_rad(3), NUMBER_OF_PARTICLES)
     while True:
         try:
-            x = float(input("Enter target x coordinate: "))
-            y = float(input("Enter target y coordinate: "))
+            x = float(input("Enter target x coordinate (metres): "))
+            y = float(input("Enter target y coordinate (metres): "))
         except Exception:
             print("Invalid coordinate input.")
 
-        navigate_to_waypoint(v, x, y, v.get_location())
+        navigate_to_waypoint(v, x/100, y/100, v.get_location())
 
 try:
-    v = Visualize(0.2,deg_to_rad(1),deg_to_rad(3),NUMBER_OF_PARTICLES)
-    v.draw_square()
+    #v = Visualize(0.2,deg_to_rad(1),deg_to_rad(3),NUMBER_OF_PARTICLES)
+    #v.draw_square()
     # v.turn(180)
     # v.forward(20)
     # v.turn(90)
-    # interactive_demo()
+    interactive_demo()
     # v = Visualize(0.2,deg_to_rad(1),deg_to_rad(3),NUMBER_OF_PARTICLES)
     # navigate_to_waypoint(v, 10, 15, v.get_location())
         
