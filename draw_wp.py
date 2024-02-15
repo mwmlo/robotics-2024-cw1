@@ -210,7 +210,7 @@ def interactive_demo():
         except Exception:
             print("Invalid coordinate input.")
 
-        navigate_to_waypoint(v, x/100, y/100, v.get_location())
+        navigate_to_waypoint(v, x*100, y*100, v.get_location())
 
 try:
     #v = Visualize(0.2,deg_to_rad(1),deg_to_rad(3),NUMBER_OF_PARTICLES)
