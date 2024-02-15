@@ -15,7 +15,7 @@ from Canvas import Canvas
 from Map import Map, myMap
 
 BP = brickpi3.BrickPi3()
-
+BP.set_sensor_type(SONAR_PORT, BP.SENSOR_TYPE.NXT_ULTRASONIC)
 
 class Robot:
     def __init__(self, visualizer: Visualize, terrain: Map):
@@ -90,18 +90,20 @@ class Robot:
             time.sleep(0.5)
             direction = -direction
 
-    def localize(self, waypoints: list[tuple], std: float, k: float):
+    def calculate_likelihood(self, x, y, theta, z):
+        d_true = wall_distance(x, y, theta, self.terrain)
+        return likelihood(z, d_true)
+
+    def localize(self, waypoints: list[tuple]):
         (x,y) = waypoints[0]
         self.v.particles_gen(100, x, y, 0)
         loc = np.array([x,y,0])
         for (x,y) in waypoints[1:]:
             print("Heading towards point:", x,y)
             self.navigate(loc, x, y, draw=True)
-            d_measure = None   # Sonar measure result, To be implemented...
+            d_measure = BP.get_sensor(SONAR_PORT) # Sonar measure result
             for p in self.v.particles:
-                d_true = wall_distance(p.x, p.y, p.theta, self.terrain)
-                lik = likelihood(d_measure, d_true, std, k)
-                p.weight *= lik
+                p.weight *= self.calculate_likelihood(p.x, p.y, p.theta, d_measure)
             normalize(self.v)
             resample(self.v)
             loc = self.v.estimate_location()
@@ -116,7 +118,7 @@ if __name__ == "__main__":
         # robot.turn(90)
         waypoints = [(84, 30),(180, 30),(180, 54),(138, 54),
                      (138, 168),(114, 168),(114, 84),(84, 84),(84, 30)]
-        robot.localize(waypoints, 2.5, 0.05)
+        robot.localize(waypoints)
 
     except KeyboardInterrupt:  # program gets interrupted by Ctrl+C on the keyboard.
         BP.reset_all()

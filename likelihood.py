@@ -1,4 +1,5 @@
 from Map import Map
+from Constants import LIKELIHOOD_K, LIKELIHOOD_STD
 import numpy as np
 
 def wall_distance(x,y,theta, terrain: Map):
@@ -19,7 +20,6 @@ def wall_distance(x,y,theta, terrain: Map):
             
     return dmin
 
-def likelihood(d_measure, d_true, std, k):
-    p = - pow(d_measure-d_true, 2) / (2*pow(std, 2))
-    return np.exp(p) + k
-    
+def likelihood(d_measure, d_true):
+    p = - pow(d_measure-d_true, 2) / (2*pow(LIKELIHOOD_STD, 2))
+    return np.exp(p) + LIKELIHOOD_K
