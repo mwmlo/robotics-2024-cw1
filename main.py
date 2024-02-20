@@ -33,12 +33,12 @@ class Robot:
 
             time.sleep(interval)
 
-    def navigate(self, loc, x_targ, y_targ):
-        vec = np.array([x_targ, y_targ]) - loc[:2]
+    def navigate(self, x_targ, y_targ):
+        vec = np.array([x_targ, y_targ]) - self.loc[:2]
         distance = np.sqrt(pow(vec[0], 2) + pow(vec[1], 2))
         rad = direction(vec[0], vec[1])
 
-        self.turn(ang_diff(loc[2], rad))
+        self.turn(ang_diff(self.loc[2], rad))
         time.sleep(0.5)
         # move in 20cm steps
         while distance > 20:
@@ -46,6 +46,17 @@ class Robot:
             self.forward(20)
             time.sleep(0.5)
         self.forward(distance)
+        
+    def recalc_sensor(self):
+        # Sonar measure result
+        d_measure = BP.get_sensor(SONAR_PORT)
+        print(f"Sonar dist {d_measure}")
+        for p in self.v.particles:
+            p.weight *= self.calculate_likelihood(p.x, p.y, p.theta, d_measure)
+        normalize(self.v)
+        resample(self.v)
+        self.loc = self.v.estimate_location()
+        
 
     def turn(self, ang):
         angle = ang * TURN_PER_DEG
@@ -60,6 +71,7 @@ class Robot:
 
         self.start(L_POS - angle, R_POS + angle)
         self.v.turn(ang)
+        self.recalc_sensor()
 
     def forward(self, dist):
         distance = dist * FORWARD_PER_CM
@@ -74,6 +86,8 @@ class Robot:
 
         self.start(L_POS + distance, R_POS + distance)
         self.v.forward(dist)
+        self.recalc_sensor()
+        
 
     def draw_square(self, size=40):
         for i in range(4):
@@ -99,16 +113,10 @@ class Robot:
     def localize(self, waypoints: list[tuple]):
         (x,y) = waypoints[0]
         self.v.particles_gen(NUMBER_PARTICLES, x, y, 0)
-        loc = np.array([x,y,0])
+        self.loc = np.array([x,y,0])
         for (x,y) in waypoints[1:]:
             print(f"Heading towards point: ({x}, {y})")
-            self.navigate(loc, x, y)
-            d_measure = BP.get_sensor(SONAR_PORT)  # Sonar measure result
-            for p in self.v.particles:
-                p.weight *= self.calculate_likelihood(p.x, p.y, p.theta, d_measure)
-            normalize(self.v)
-            resample(self.v)
-            loc = self.v.estimate_location()
+            self.navigate(x, y)
 
 
 if __name__ == "__main__":

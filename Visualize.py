@@ -36,18 +36,18 @@ class Visualize:
 
     def draw_line(self, line_coords):
         (x0, y0, x1, y1) = line_coords
-        print("drawing:" + str((self.__gx(x0), self.__gy(y0), self.__gx(x1), self.__gy(y1))))
+        # print("drawing:" + str((self.__gx(x0), self.__gy(y0), self.__gx(x1), self.__gy(y1))))
         print("drawLine:" + str((self.__gx(x0), self.__gy(y0), self.__gx(x1), self.__gy(y1))))
 
     def draw_particles(self):
         particle_coords = [p.draw() for p in self.particles]
         gparticle_coords = [(self.__gx(x), self.__gy(y), t) for (x, y, t) in particle_coords]
-        print("drawing:" + str(gparticle_coords))
+        # print("drawing:" + str(gparticle_coords))
         print("drawParticles:" + str(gparticle_coords))
 
     def estimate_location(self):
         locs = np.array([[p.x, p.y, p.theta] for p in self.particles])
-        weights = np.array([p.weight for p in self.particles])
+        weights = np.array([[p.weight] for p in self.particles])
         s = locs * weights
         return np.sum(s, axis=0)
 

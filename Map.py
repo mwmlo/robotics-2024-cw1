@@ -24,9 +24,7 @@ def myMap(visualise):
     # c: C to D
     # d: D to E
     # e: E to F
-    print("first wall")
     mymap.add_wall((0, 0, 0, 168))  # a
-    print("second wall")
     mymap.add_wall((0, 168, 84, 168))  # b
     mymap.add_wall((84, 126, 84, 210))  # c
     mymap.add_wall((84, 210, 168, 210))  # d
