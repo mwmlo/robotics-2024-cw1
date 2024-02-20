@@ -34,7 +34,7 @@ class Robot:
 
             time.sleep(interval)
 
-    def navigate(self, loc, x_targ, y_targ, draw=False):
+    def navigate(self, loc, x_targ, y_targ):
         vec = np.array([x_targ, y_targ]) - loc[:2]
         distance = np.sqrt(pow(vec[0], 2) + pow(vec[1], 2))
         rad = direction(vec[0], vec[1])
@@ -44,11 +44,11 @@ class Robot:
         # move in 20cm steps
         while distance > 20:
             distance -= 20
-            self.forward(20, draw)
+            self.forward(20)
             time.sleep(0.5)
-        self.forward(distance, draw)
+        self.forward(distance)
 
-    def turn(self, ang, draw=True):
+    def turn(self, ang):
         angle = ang * TURN_PER_DEG
         BP.set_motor_limits(RIGHT_WHEEL_PORT, POWER_LIMIT, TURN_DPS)
         BP.set_motor_limits(LEFT_WHEEL_PORT, POWER_LIMIT, TURN_DPS)
@@ -60,9 +60,9 @@ class Robot:
         BP.set_motor_position(LEFT_WHEEL_PORT, L_POS - angle)
 
         self.start(L_POS - angle, R_POS + angle)
-        self.v.turn(ang, draw)
+        self.v.turn(ang)
 
-    def forward(self, dist, draw=True):
+    def forward(self, dist):
         distance = dist * FORWARD_PER_CM
         BP.set_motor_limits(RIGHT_WHEEL_PORT, POWER_LIMIT, MAX_DPS)
         BP.set_motor_limits(LEFT_WHEEL_PORT, POWER_LIMIT, MAX_DPS)
@@ -74,7 +74,7 @@ class Robot:
         BP.set_motor_position(LEFT_WHEEL_PORT, L_POS + distance)
 
         self.start(L_POS + distance, R_POS + distance)
-        self.v.forward(dist, draw)
+        self.v.forward(dist)
 
     def draw_square(self, size=40):
         for i in range(4):
