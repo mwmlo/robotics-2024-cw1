@@ -41,11 +41,9 @@ class Robot:
 
         self.turn(ang_diff(loc[2], rad), draw)
         time.sleep(0.5)
-        # move in 20cm steps
         while distance > 20:
             distance -= 20
             self.forward(20, draw)
-            time.sleep(0.5)
         self.forward(distance, draw)
 
     def turn(self, ang, draw=True):
@@ -99,10 +97,10 @@ class Robot:
 
     def localize(self, waypoints: list[tuple]):
         (x,y) = waypoints[0]
-        self.v.particles_gen(NUMBER_PARTICLES, x, y, 0)
+        self.v.particles_gen(100, x, y, 0)
         loc = np.array([x,y,0])
         for (x,y) in waypoints[1:]:
-            print(f"Heading towards point: ({x}, {y})")
+            print("Heading towards point:", x,y)
             self.navigate(loc, x, y, draw=True)
             d_measure = BP.get_sensor(SONAR_PORT) # Sonar measure result
             for p in self.v.particles:

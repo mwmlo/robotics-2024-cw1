@@ -13,8 +13,9 @@ class Visualize:
         self.e_std = e_std
         self.f_std = f_std
         self.g_std = g_std
-        # draw axes
+       # draw axes
         self.draw_axes()
+        self.particles_gen(self, 100, 0, 0, 0)
 
     def particles_gen(self, n_particles, x, y, theta):
         # generate list of particles

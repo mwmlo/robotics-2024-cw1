@@ -102,7 +102,7 @@ class Robot:
         self.v.particles_gen(NUMBER_PARTICLES, x, y, 0)
         loc = np.array([x,y,0])
         for (x,y) in waypoints[1:]:
-            print(f"Heading towards point: ({x}, {y})")
+            print("Heading towards point:", x,y)
             self.navigate(loc, x, y, draw=True)
             d_measure = BP.get_sensor(SONAR_PORT) # Sonar measure result
             for p in self.v.particles:

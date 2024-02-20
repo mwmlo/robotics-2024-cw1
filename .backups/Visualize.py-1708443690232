@@ -15,6 +15,7 @@ class Visualize:
         self.g_std = g_std
         # draw axes
         self.draw_axes()
+        self.particles_gen(NUMBER_PARTICLES, 0, 0, 0)
 
     def particles_gen(self, n_particles, x, y, theta):
         # generate list of particles
