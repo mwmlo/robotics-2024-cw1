@@ -26,7 +26,6 @@ def will_hit_wall(pos_x, pos_y, pos_theta, wall):
 
     # Edge case: wall's endpoints are above and below robot's x-axis in west
     if angle_min < (-np.pi / 2) and angle_max > (np.pi / 2):
-        print("EDGE CASE DETECTED", angle_min, angle_max)
         return -np.pi <= pos_theta <= angle_min or angle_max <= pos_theta <= np.pi
 
     return angle_min <= pos_theta <= angle_max
@@ -69,6 +68,5 @@ def wall_distance(x, y, theta, terrain: Map):
 
 
 def likelihood(d_measure, d_true):
-    print(d_measure, d_true, LIKELIHOOD_STD)
     p = - pow(d_measure - d_true, 2) / (2 * pow(LIKELIHOOD_STD, 2))
     return np.exp(p) + LIKELIHOOD_K

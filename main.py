@@ -125,7 +125,7 @@ class Robot:
 
 if __name__ == "__main__":
     try:
-        visualizer = Visualize(0.2, deg_to_rad(1), deg_to_rad(3))
+        visualizer = Visualize(0.5, deg_to_rad(1), deg_to_rad(3))
         terrain = myMap(visualizer)
         terrain.draw()
         robot = Robot(visualizer, terrain)

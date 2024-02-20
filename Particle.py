@@ -16,3 +16,6 @@ class Particle:
 
     def draw(self):
         return self.x, self.y, self.theta
+    
+    def __str__(self) -> str:
+        return f"({self.x}, {self.y}, {self.theta}, {self.weight})"
