@@ -35,3 +35,6 @@ def ang_diff(f, t):
     diff = t - rad_simplify(f)
     diff = rad_simplify(diff)
     return rad_to_deg(diff)
+
+if __name__ == "__main__":
+    print(ang_diff(0, direction(15, 0)))

@@ -11,7 +11,6 @@ from Utils import deg_to_rad, direction, ang_diff
 from Visualize import Visualize
 from likelihood import wall_distance, likelihood
 from mcl_resample import normalize, resample
-from Canvas import Canvas
 from Map import Map, myMap
 
 
@@ -93,29 +92,30 @@ class Robot:
         return likelihood(z, d_true)
 
     def localize(self, waypoints: list[tuple]):
-        (x,y) = waypoints[0]
+        (x, y) = waypoints[0]
         self.v.particles_gen(100, x, y, 0)
-        loc = np.array([x,y,0])
-        for (x,y) in waypoints[1:]:
-            print("Heading towards point:", x,y)
+        loc = np.array([x, y, 0])
+        for (x, y) in waypoints[1:]:
+            print("Heading towards point:", x, y)
             self.navigate(loc, x, y, draw=True)
-            d_measure = BP.get_sensor(SONAR_PORT) # Sonar measure result
+            d_measure = BP.get_sensor(SONAR_PORT)  # Sonar measure result
             for p in self.v.particles:
                 p.weight *= self.calculate_likelihood(p.x, p.y, p.theta, d_measure)
             normalize(self.v)
             resample(self.v)
             loc = self.v.estimate_location()
 
+
 if __name__ == "__main__":
     try:
         visualizer = Visualize(0.2, deg_to_rad(1), deg_to_rad(3))
-        terrain = myMap(canvas=Canvas())
+        terrain = myMap(visualizer)
         robot = Robot(visualizer, terrain)
         # robot.draw_star(10)
         # robot.forward(40)
         # robot.turn(90)
-        waypoints = [(84, 30),(180, 30),(180, 54),(138, 54),
-                     (138, 168),(114, 168),(114, 84),(84, 84),(84, 30)]
+        waypoints = [(84, 30), (180, 30), (180, 54), (138, 54),
+                     (138, 168), (114, 168), (114, 84), (84, 84), (84, 30)]
         robot.localize(waypoints)
 
     except KeyboardInterrupt:  # program gets interrupted by Ctrl+C on the keyboard.
