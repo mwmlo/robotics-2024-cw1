@@ -10,7 +10,7 @@ def wall_distance(x, y, theta, terrain: Map):
         dy = y2 - y1
         dx = x2 - x1
         denom = dy * np.cos(theta) - dx * np.sin(theta)
-        if denom > den_lim or den_lim < -den_lim:
+        if denom > den_lim or denom < -den_lim:
             d = (dy * (x1 - x) - dx * (y1 - y)) / denom
             if d >= 0 and d < dmin:
                 # check if this wall is valid
