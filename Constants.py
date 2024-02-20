@@ -1,8 +1,13 @@
-from main import BP
+import brickpi3
+
+BP = brickpi3.BrickPi3()
 
 RIGHT_WHEEL_PORT = BP.PORT_A
 LEFT_WHEEL_PORT = BP.PORT_D
 SONAR_PORT = BP.PORT_1
+
+BP.set_sensor_type(SONAR_PORT, BP.SENSOR_TYPE.NXT_ULTRASONIC)
+
 POWER_LIMIT = 70
 MAX_DPS = 360
 TURN_DPS = 230

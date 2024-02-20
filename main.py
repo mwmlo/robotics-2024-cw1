@@ -3,7 +3,7 @@ from __future__ import print_function
 
 import time  # import the time library for the sleep function
 
-import brickpi3  # import the BrickPi3 drivers
+# import brickpi3  # import the BrickPi3 drivers
 import numpy as np
 
 from Constants import *
@@ -14,8 +14,6 @@ from mcl_resample import normalize, resample
 from Canvas import Canvas
 from Map import Map, myMap
 
-BP = brickpi3.BrickPi3()
-BP.set_sensor_type(SONAR_PORT, BP.SENSOR_TYPE.NXT_ULTRASONIC)
 
 class Robot:
     def __init__(self, visualizer: Visualize, terrain: Map):

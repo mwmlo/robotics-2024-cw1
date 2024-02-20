@@ -58,6 +58,7 @@ class Visualize:
             self.draw_particles()
 
     def forward(self, dist, draw):
+        print(f"DRAWING {draw}")
         for p in self.particles:
             e = random.gauss(0, self.e_std)
             f = random.gauss(0, self.f_std)
