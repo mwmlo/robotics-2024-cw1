@@ -3,7 +3,6 @@ from __future__ import print_function
 
 import time  # import the time library for the sleep function
 
-# import brickpi3  # import the BrickPi3 drivers
 import numpy as np
 
 from Constants import *
@@ -22,8 +21,8 @@ class Robot:
     @staticmethod
     def start(l_angle_target, r_angle_target, threshold=5, interval=0.5):
         while True:
-            # print("R:", BP.get_motor_status(RIGHT_WHEEL_PORT))
-            # print("L:", BP.get_motor_status(LEFT_WHEEL_PORT))
+            print("R:", BP.get_motor_status(RIGHT_WHEEL_PORT))
+            print("L:", BP.get_motor_status(LEFT_WHEEL_PORT))
 
             r_angle = BP.get_motor_encoder(RIGHT_WHEEL_PORT)
             l_angle = BP.get_motor_encoder(LEFT_WHEEL_PORT)
@@ -32,40 +31,17 @@ class Robot:
                 break
 
             time.sleep(interval)
-            
-    # returns true if continue to step
-    def step(self, waypoint):
-        vec = np.array([waypoint[0], waypoint[1]]) - self.loc[:2]
+
+    def navigate(self, loc, x_targ, y_targ, draw=False):
+        vec = np.array([x_targ, y_targ]) - loc[:2]
         distance = np.sqrt(pow(vec[0], 2) + pow(vec[1], 2))
         rad = direction(vec[0], vec[1])
 
-        self.turn(ang_diff(self.loc[2], rad))
+        self.turn(ang_diff(loc[2], rad), draw)
         time.sleep(0.5)
-        # move in 20cm steps
-        if distance > 20:
-            self.forward(20)
-            time.sleep(0.5)
-            return True
-        self.forward(distance)
-        return False
+        self.forward(distance, draw)
 
-
-    def navigate(self, x_targ, y_targ):
-        while self.step([x_targ,y_targ]):
-            pass
-        
-    def recalc_sensor(self):
-        # Sonar measure result
-        d_measure = BP.get_sensor(SONAR_PORT)
-        print(f"Sonar dist {d_measure}")
-        for p in self.v.particles:
-            p.weight *= self.calculate_likelihood(p.x, p.y, p.theta, d_measure)
-        normalize(self.v)
-        resample(self.v)
-        self.loc = self.v.estimate_location()
-        
-
-    def turn(self, ang):
+    def turn(self, ang, draw=True):
         angle = ang * TURN_PER_DEG
         BP.set_motor_limits(RIGHT_WHEEL_PORT, POWER_LIMIT, TURN_DPS)
         BP.set_motor_limits(LEFT_WHEEL_PORT, POWER_LIMIT, TURN_DPS)
@@ -77,10 +53,9 @@ class Robot:
         BP.set_motor_position(LEFT_WHEEL_PORT, L_POS - angle)
 
         self.start(L_POS - angle, R_POS + angle)
-        self.v.turn(ang)
-        self.recalc_sensor()
+        self.v.turn(ang, draw)
 
-    def forward(self, dist):
+    def forward(self, dist, draw=True):
         distance = dist * FORWARD_PER_CM
         BP.set_motor_limits(RIGHT_WHEEL_PORT, POWER_LIMIT, MAX_DPS)
         BP.set_motor_limits(LEFT_WHEEL_PORT, POWER_LIMIT, MAX_DPS)
@@ -92,9 +67,7 @@ class Robot:
         BP.set_motor_position(LEFT_WHEEL_PORT, L_POS + distance)
 
         self.start(L_POS + distance, R_POS + distance)
-        self.v.forward(dist)
-        self.recalc_sensor()
-        
+        self.v.forward(dist, draw)
 
     def draw_square(self, size=40):
         for i in range(4):
@@ -118,19 +91,24 @@ class Robot:
         return likelihood(z, d_true)
 
     def localize(self, waypoints: list[tuple]):
-        (x,y) = waypoints[0]
-        self.v.particles_gen(NUMBER_PARTICLES, x, y, 0)
-        self.loc = np.array([x,y,0])
-        for (x,y) in waypoints[1:]:
-            print(f"Heading towards point: ({x}, {y})")
-            self.navigate(x, y)
+        (x, y) = waypoints[0]
+        self.v.particles_gen(100, x, y, 0)
+        loc = np.array([x, y, 0])
+        for (x, y) in waypoints[1:]:
+            print("Heading towards point:", x, y)
+            self.navigate(loc, x, y, draw=True)
+            d_measure = BP.get_sensor(SONAR_PORT)  # Sonar measure result
+            for p in self.v.particles:
+                p.weight *= self.calculate_likelihood(p.x, p.y, p.theta, d_measure)
+            normalize(self.v)
+            resample(self.v)
+            loc = self.v.estimate_location()
 
 
 if __name__ == "__main__":
     try:
         visualizer = Visualize(0.2, deg_to_rad(1), deg_to_rad(3))
         terrain = myMap(visualizer)
-        terrain.draw()
         robot = Robot(visualizer, terrain)
         # robot.draw_star(10)
         # robot.forward(40)
