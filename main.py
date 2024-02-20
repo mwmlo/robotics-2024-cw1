@@ -22,8 +22,8 @@ class Robot:
     @staticmethod
     def start(l_angle_target, r_angle_target, threshold=5, interval=0.5):
         while True:
-            print("R:", BP.get_motor_status(RIGHT_WHEEL_PORT))
-            print("L:", BP.get_motor_status(LEFT_WHEEL_PORT))
+            # print("R:", BP.get_motor_status(RIGHT_WHEEL_PORT))
+            # print("L:", BP.get_motor_status(LEFT_WHEEL_PORT))
 
             r_angle = BP.get_motor_encoder(RIGHT_WHEEL_PORT)
             l_angle = BP.get_motor_encoder(LEFT_WHEEL_PORT)
@@ -32,20 +32,27 @@ class Robot:
                 break
 
             time.sleep(interval)
-
-    def navigate(self, x_targ, y_targ):
-        vec = np.array([x_targ, y_targ]) - self.loc[:2]
+            
+    # returns true if continue to step
+    def step(self, waypoint):
+        vec = np.array([waypoint[0], waypoint[1]]) - self.loc[:2]
         distance = np.sqrt(pow(vec[0], 2) + pow(vec[1], 2))
         rad = direction(vec[0], vec[1])
 
         self.turn(ang_diff(self.loc[2], rad))
         time.sleep(0.5)
         # move in 20cm steps
-        while distance > 20:
-            distance -= 20
+        if distance > 20:
             self.forward(20)
             time.sleep(0.5)
+            return True
         self.forward(distance)
+        return False
+
+
+    def navigate(self, x_targ, y_targ):
+        while self.step([x_targ,y_targ]):
+            pass
         
     def recalc_sensor(self):
         # Sonar measure result
