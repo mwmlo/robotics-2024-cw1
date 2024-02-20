@@ -21,7 +21,15 @@ def will_hit_wall(pos_x, pos_y, pos_theta, wall):
     angle2 = vec_angle_from_east(pos_x, pos_y, x2, y2)
 
     # Check that the robot's orientation is within wall endpoints
-    return (angle1 <= pos_theta <= angle2) or (angle2 <= pos_theta <= angle1)
+    angle_min = min(angle1, angle2)
+    angle_max = max(angle1, angle2)
+
+    # Edge case: wall's endpoints are above and below robot's x-axis in west
+    if angle_min < (-np.pi / 2) and angle_max > (np.pi / 2):
+        print("EDGE CASE DETECTED", angle_min, angle_max)
+        return -np.pi <= pos_theta <= angle_min or angle_max <= pos_theta <= np.pi
+
+    return angle_min <= pos_theta <= angle_max
 
 def wall_distance(x, y, theta, terrain: Map):
     """Returns the distance from the robot's position to the closest wall in the given Map."""

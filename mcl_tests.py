@@ -46,6 +46,10 @@ class TestMonteCarloMethods(unittest.TestCase):
         self.assertTrue(will_hit_wall(10, 158, 3 * np.pi/4, AB_wall))
         self.assertTrue(will_hit_wall(10, 158, 3 * np.pi/4, OA_wall))
 
+    def test_will_hit_wall_facing_west(self):
+        OA_wall = (0, 0, 0, 168)
+        self.assertTrue(will_hit_wall(10, 158, np.pi, OA_wall))
+
     def test_wall_distance_wp1_orientx(self):
         # Location: waypoint 1, facing along the x-axis (right)
         pos_x, pos_y, pos_theta = 84, 30, 0
