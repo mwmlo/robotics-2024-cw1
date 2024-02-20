@@ -1,9 +1,9 @@
 # A Map class containing walls
 class Map:
 
-    def __init__(self, canvas):
+    def __init__(self, visualise):
         self.walls = []
-        self.canvas = canvas
+        self.visualise = visualise
 
     def add_wall(self, wall):
         self.walls.append(wall)
@@ -13,11 +13,11 @@ class Map:
 
     def draw(self):
         for wall in self.walls:
-            self.canvas.drawLine(wall)
+            self.visualise.drawLine(wall)
 
 
-def myMap(canvas):
-    mymap = Map(canvas)
+def myMap(visualise):
+    mymap = Map(visualise)
     # Definitions of walls
     # a: O to A
     # b: A to B
