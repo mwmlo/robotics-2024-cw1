@@ -2,6 +2,7 @@ from Map import Map
 from Constants import LIKELIHOOD_K, LIKELIHOOD_STD
 import numpy as np
 
+den_lim = 0.001
 
 def wall_distance(x, y, theta, terrain: Map):
     dmin = 255
@@ -9,19 +10,18 @@ def wall_distance(x, y, theta, terrain: Map):
         dy = y2 - y1
         dx = x2 - x1
         denom = dy * np.cos(theta) - dx * np.sin(theta)
-        if denom != 0:
+        if denom > den_lim and den_lim < -den_lim:
             d = (dy * (x1 - x) - dx * (y1 - y)) / denom
-            if d >= 0:
+            if d >= 0 and d < dmin:
                 # check if this wall is valid
                 cross = np.array(x + d*np.cos(theta), y + d*np.sin(theta))
                 vec1 = np.array([x1, y1]) - cross
                 vec2 = np.array([x2, y2]) - cross
                 r = vec2 * vec1
                 #print("r: ", r)
-                if r[0] <= 0 and r[1] <= 0:
+                if r[0] <= 0 or r[1] <= 0:
                     # replace the result if current wall is closer
-                    if dmin is None or d < dmin:
-                        dmin = d
+                    dmin = d
 
     return dmin
 
