@@ -38,7 +38,7 @@ class Robot:
         distance = np.sqrt(pow(vec[0], 2) + pow(vec[1], 2))
         rad = direction(vec[0], vec[1])
 
-        self.turn(ang_diff(loc[2], rad), draw)
+        self.turn(ang_diff(loc[2], rad))
         time.sleep(0.5)
         # move in 20cm steps
         while distance > 20:
@@ -102,7 +102,7 @@ class Robot:
         loc = np.array([x,y,0])
         for (x,y) in waypoints[1:]:
             print(f"Heading towards point: ({x}, {y})")
-            self.navigate(loc, x, y, draw=True)
+            self.navigate(loc, x, y)
             d_measure = BP.get_sensor(SONAR_PORT)  # Sonar measure result
             for p in self.v.particles:
                 p.weight *= self.calculate_likelihood(p.x, p.y, p.theta, d_measure)
@@ -115,6 +115,7 @@ if __name__ == "__main__":
     try:
         visualizer = Visualize(0.2, deg_to_rad(1), deg_to_rad(3))
         terrain = myMap(visualizer)
+        terrain.draw()
         robot = Robot(visualizer, terrain)
         # robot.draw_star(10)
         # robot.forward(40)

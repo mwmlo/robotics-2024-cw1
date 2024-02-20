@@ -36,11 +36,13 @@ class Visualize:
 
     def draw_line(self, line_coords):
         (x0, y0, x1, y1) = line_coords
+        print("drawing:" + str((self.__gx(x0), self.__gy(y0), self.__gx(x1), self.__gy(y1))))
         print("drawLine:" + str((self.__gx(x0), self.__gy(y0), self.__gx(x1), self.__gy(y1))))
 
     def draw_particles(self):
         particle_coords = [p.draw() for p in self.particles]
         gparticle_coords = [(self.__gx(x), self.__gy(y), t) for (x, y, t) in particle_coords]
+        print("drawing:" + str(gparticle_coords))
         print("drawParticles:" + str(gparticle_coords))
 
     def estimate_location(self):
@@ -49,20 +51,19 @@ class Visualize:
         s = locs * weights
         return np.sum(s, axis=0)
 
-    def turn(self, ang, draw):
+    def turn(self, ang):
         rad = deg_to_rad(ang)
         for p in self.particles:
             g = random.gauss(0, self.g_std)
             p.update_rot(rad, g)
-        if draw:
+        if DRAW:
             self.draw_particles()
 
-    def forward(self, dist, draw):
-        print(f"DRAWING {draw}")
+    def forward(self, dist):
         for p in self.particles:
             e = random.gauss(0, self.e_std)
             f = random.gauss(0, self.f_std)
             p.update_line(dist, e, f)
 
-        if draw:
+        if DRAW:
             self.draw_particles()
