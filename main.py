@@ -30,12 +30,14 @@ class Robot:
 
             time.sleep(interval)
             
-    # returns true if continue to step
+    # returns true if moved
     def step(self, waypoint):
         vec = np.array([waypoint[0], waypoint[1]]) - self.loc[:2]
         distance = np.sqrt(pow(vec[0], 2) + pow(vec[1], 2))
+        if distance <= WAYPOINT_SUCCESS_THRESHOLD:
+            return False
+        
         rad = direction(vec[0], vec[1])
-
         self.turn(ang_diff(self.loc[2], rad))
         time.sleep(0.5)
         # move in 20cm steps
@@ -44,13 +46,13 @@ class Robot:
             time.sleep(0.5)
             return True
         self.forward(distance)
-        return False
+        time.sleep(0.5)
+        return True
 
 
     def navigate(self, x_targ, y_targ):
         while self.step([x_targ,y_targ]):
             self.recalc_sensor()
-        self.recalc_sensor()
         print("weightpoint estimate:", self.loc)
         
     def recalc_sensor(self):
