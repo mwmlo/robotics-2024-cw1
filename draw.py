@@ -151,7 +151,7 @@ def start(l_angle_target, r_angle_target, threshold=5, interval=0.5):
 
 try:
     v = Visualize(0.2,deg_to_rad(1),deg_to_rad(3),NUMBER_OF_PARTICLES)
-    v.draw_square()
+    v.forward(60)
     #v.draw_star(10)
     # forward(40)
     # turn(90)

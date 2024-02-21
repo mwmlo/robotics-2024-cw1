@@ -49,11 +49,18 @@ class Robot:
 
     def navigate(self, x_targ, y_targ):
         while self.step([x_targ,y_targ]):
-            pass
+            self.recalc_sensor()
         
     def recalc_sensor(self):
-        # Sonar measure result
-        d_measure = BP.get_sensor(SONAR_PORT)
+        # Sonar measure result\
+        while True:
+            try:
+                d_measure = BP.get_sensor(SONAR_PORT)
+                break
+            except:
+                print("Sonar error")
+                time.sleep(0.5)
+            
         print(f"Sonar dist {d_measure}")
         for p in self.v.particles:
             p.weight *= self.calculate_likelihood(p.x, p.y, p.theta, d_measure)
@@ -75,7 +82,7 @@ class Robot:
 
         self.start(L_POS - angle, R_POS + angle)
         self.v.turn(ang)
-        self.recalc_sensor()
+        
 
     def forward(self, dist):
         distance = dist * FORWARD_PER_CM
@@ -90,7 +97,6 @@ class Robot:
 
         self.start(L_POS + distance, R_POS + distance)
         self.v.forward(dist)
-        self.recalc_sensor()
         
 
     def draw_square(self, size=40):
@@ -125,12 +131,16 @@ class Robot:
 
 if __name__ == "__main__":
     try:
+        
+        BP.set_sensor_type(SONAR_PORT, BP.SENSOR_TYPE.NXT_ULTRASONIC)
         visualizer = Visualize(0.5, deg_to_rad(1), deg_to_rad(3))
         terrain = myMap(visualizer)
         terrain.draw()
         robot = Robot(visualizer, terrain)
         waypoints = [(84, 30), (180, 30), (180, 54), (138, 54),
                      (138, 168), (114, 168), (114, 84), (84, 84), (84, 30)]
+        #visualizer.particles_gen(NUMBER_PARTICLES, 0, 0, 0)
+        #robot.turn(90)
         robot.localize(waypoints)
 
     except KeyboardInterrupt:  # program gets interrupted by Ctrl+C on the keyboard.
