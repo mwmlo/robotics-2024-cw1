@@ -50,6 +50,7 @@ class Robot:
     def navigate(self, x_targ, y_targ):
         while self.step([x_targ,y_targ]):
             self.recalc_sensor()
+        self.recalc_sensor()
         
     def recalc_sensor(self):
         # Sonar measure result\
