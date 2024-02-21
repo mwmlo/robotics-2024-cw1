@@ -22,7 +22,7 @@ def resample(visualizer):
         # See where the random number intersects with the array values
         for i in range(len(cumulative_weights) - 1):
             if cumulative_weights[i] <= sample_num <= cumulative_weights[i + 1]:
-                p = visualizer.particles[i - 1]
+                p = visualizer.particles[i]
                 new_p = Particle(p.x, p.y, p.theta, new_w)
                 resampled_particles.append(new_p)
                 break

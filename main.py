@@ -70,6 +70,7 @@ class Robot:
         
 
     def turn(self, ang):
+        print(ang)
         angle = ang * TURN_PER_DEG
         BP.set_motor_limits(RIGHT_WHEEL_PORT, POWER_LIMIT, TURN_DPS)
         BP.set_motor_limits(LEFT_WHEEL_PORT, POWER_LIMIT, TURN_DPS)
@@ -133,7 +134,7 @@ if __name__ == "__main__":
     try:
         
         BP.set_sensor_type(SONAR_PORT, BP.SENSOR_TYPE.NXT_ULTRASONIC)
-        visualizer = Visualize(0.5, deg_to_rad(1), deg_to_rad(3))
+        visualizer = Visualize(0.2, deg_to_rad(0), deg_to_rad(0))
         terrain = myMap(visualizer)
         terrain.draw()
         robot = Robot(visualizer, terrain)
