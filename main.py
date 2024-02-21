@@ -56,7 +56,7 @@ class Robot:
         # Sonar measure result\
         while True:
             try:
-                d_measure = BP.get_sensor(SONAR_PORT)
+                d_measure = BP.get_sensor(SONAR_PORT) + 6
                 break
             except:
                 print("Sonar error")
@@ -135,7 +135,7 @@ if __name__ == "__main__":
     try:
         
         BP.set_sensor_type(SONAR_PORT, BP.SENSOR_TYPE.NXT_ULTRASONIC)
-        visualizer = Visualize(0.2, deg_to_rad(0), deg_to_rad(0))
+        visualizer = Visualize(0.2, deg_to_rad(0.5), deg_to_rad(1.5))
         terrain = myMap(visualizer)
         terrain.draw()
         robot = Robot(visualizer, terrain)
