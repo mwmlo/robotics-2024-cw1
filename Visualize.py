@@ -46,8 +46,14 @@ class Visualize:
         print("drawParticles:" + str(gparticle_coords))
 
     def estimate_location(self):
-        locs = np.array([[p.x, p.y, p.theta] for p in self.particles])
-        weights = np.array([[p.weight] for p in self.particles])
+        locs = []
+        weights = []
+        for p in self.particles:
+            if p.weight > 0:
+                locs.append([p.x, p.y, p.theta])
+                weights.append([p.weight])
+        locs = np.array(locs)
+        weights = np.array(weights)
         s = locs * weights
         #print("estimate location", np.sum(s, axis=0))
         return np.sum(s, axis=0)

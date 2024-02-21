@@ -7,7 +7,7 @@ import time  # import the time library for the sleep function
 import numpy as np
 
 from Constants import *
-from Utils import deg_to_rad, direction, ang_diff
+from Utils import deg_to_rad, rad_to_deg, direction, ang_diff
 from Visualize import Visualize
 from likelihood import wall_distance, likelihood
 from mcl_resample import normalize, resample
@@ -51,23 +51,38 @@ class Robot:
         while self.step([x_targ,y_targ]):
             self.recalc_sensor()
         self.recalc_sensor()
-        print("weightpoint estimate:", self.loc)
+        print("weightpoint estimate:", self.loc[:2], rad_to_deg(self.loc[2]))
         
     def recalc_sensor(self):
         # Sonar measure result\
+        dts = []
+        i = 0
+        while i < len(self.v.particles):
+            p = self.v.particles[i]
+            d_true = wall_distance(p.x, p.y, p.theta, self.terrain)
+            if d_true < MAX_TRUE_D:
+                dts.append(d_true)
+                i += 1
+            else:
+                self.v.particles.pop(i)
+        dts = np.array([dts])
+        dt_mean, dt_std = np.mean(dts), np.std(dts)
+        d_measure = 0
         while True:
             try:
                 d_measure = BP.get_sensor(SONAR_PORT) + 6
-                break
             except:
-                print("Sonar error")
+                print(">>Sonar error")
                 time.sleep(0.5)
-            
+            z_score = np.abs(d_measure-dt_mean)/dt_std
+            if z_score < SONAR_OUTSCORE:
+                break
+            print(">>Sonar outlier")
+        
         print(f"Sonar dist {d_measure}")
-        for p in self.v.particles:
-            if not self.terrain.is_particle_in(p):
-                p.weight *= 0.01
-            p.weight *= self.calculate_likelihood(p.x, p.y, p.theta, d_measure)
+        for i in range(len(self.v.particles)):
+            self.v.particles[i].weight *= likelihood(d_measure, dts[i])
+        
         normalize(self.v)
         resample(self.v)
         self.loc = self.v.estimate_location()
@@ -124,6 +139,8 @@ class Robot:
 
     def calculate_likelihood(self, x, y, theta, z):
         d_true = wall_distance(x, y, theta, self.terrain)
+        if d_true == MAX_TRUE_D:
+            return 0
         return likelihood(z, d_true)
 
     def localize(self, waypoints: list[tuple]):

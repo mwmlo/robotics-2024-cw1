@@ -1,5 +1,5 @@
 from Map import Map
-from Constants import LIKELIHOOD_K, LIKELIHOOD_STD
+from Constants import LIKELIHOOD_K, LIKELIHOOD_STD, MAX_TRUE_D
 import numpy as np
 import math
 
@@ -32,7 +32,7 @@ def will_hit_wall(pos_x, pos_y, pos_theta, wall):
 
 def wall_distance(x, y, theta, terrain: Map):
     """Returns the distance from the robot's position to the closest wall in the given Map."""
-    min_distance = 255 # If there is no nearby wall to hit, use maximum
+    min_distance = MAX_TRUE_D # If there is no nearby wall to hit, use maximum
     for wall in terrain.walls:
         if will_hit_wall(x, y, theta, wall):
             x1, y1, x2, y2 = wall
