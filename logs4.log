@@ -1,0 +1,171 @@
+I think I am at (84, 30), orientation 0.0 degrees
+I am going to turn 0.0 degrees
+I think I am at (84, 30), orientation 0.0 degrees
+I am going forward 20 cm
+Sonar dist 108
+I think I am at (104.0073485811048, 29.93978298094858), orientation -0.18808495785129087 degrees
+I am going to turn 0.23348645733783893 degrees
+I think I am at (104.0073485811048, 29.93978298094858), orientation -0.18808495785129087 degrees
+I am going forward 20 cm
+Sonar dist 84
+I think I am at (124.01319894289928, 29.897374163052003), orientation -0.15116583487129825 degrees
+I am going to turn 0.25619095917625506 degrees
+I think I am at (124.01319894289928, 29.897374163052003), orientation -0.15116583487129825 degrees
+I am going forward 20 cm
+Sonar dist 64
+I think I am at (143.99445823943432, 30.04701005562105), orientation 0.3520843604324252 degrees
+I am going to turn -0.4268916295236467 degrees
+I think I am at (143.99445823943432, 30.04701005562105), orientation 0.3520843604324252 degrees
+I am going forward 20 cm
+Sonar dist 44
+I think I am at (163.97501658813053, 29.89388847005856), orientation -0.35548062702244615 degrees
+I am going to turn 0.7348666027787829 degrees
+I think I am at (163.97501658813053, 29.89388847005856), orientation -0.35548062702244615 degrees
+I am going forward 16.025334723726623 cm
+Sonar dist 29
+At-waypoint location: {self.log} 
+
+I think I am at (179.98596159266887, 30.366055347990365), orientation 0.49285632997641854 degrees
+I am going to turn 89.47311035868245 degrees
+I think I am at (179.98596159266887, 30.366055347990365), orientation 0.49285632997641854 degrees
+I am going forward 20 cm
+Sonar dist 32
+I think I am at (179.6844587608361, 51.548498931071876), orientation 90.8929082028316 degrees
+I am going to turn -8.227321435733614 degrees
+I think I am at (179.6844587608361, 51.548498931071876), orientation 90.8929082028316 degrees
+I am going forward 2.4717248561619534 cm
+Sonar dist 30
+At-waypoint location: {self.log} 
+
+I think I am at (180.03033251387956, 54.12412650542463), orientation 82.55184906344793 degrees
+I am going to turn 97.61735978609342 degrees
+I think I am at (180.03033251387956, 54.12412650542463), orientation 82.55184906344793 degrees
+I am going forward 20 cm
+Sonar dist 160
+I think I am at (160.6171508171444, 54.06856306835081), orientation 178.38581615654905 degrees
+I am going to turn 1.7878733786702272 degrees
+I think I am at (160.6171508171444, 54.06856306835081), orientation 178.38581615654905 degrees
+I am going forward 20 cm
+Sonar dist 141
+I think I am at (140.9072131500981, 54.25010295537856), orientation 179.0808302018372 degrees
+I am going to turn 5.83612910142802 degrees
+I think I am at (140.9072131500981, 54.25010295537856), orientation 179.0808302018372 degrees
+I am going forward 2.9179512998664694 cm
+Sonar dist 139
+At-waypoint location: {self.log} 
+
+I think I am at (138.08698097314542, 53.81145191471887), orientation 184.8028567586802 degrees
+I am going to turn -94.75921278755658 degrees
+I think I am at (138.08698097314542, 53.81145191471887), orientation 184.8028567586802 degrees
+I am going forward 20 cm
+Sonar dist 153
+I think I am at (138.0794215500692, 73.70478324571032), orientation 90.17366942266025 degrees
+I am going to turn -0.1254112108237938 degrees
+I think I am at (138.0794215500692, 73.70478324571032), orientation 90.17366942266025 degrees
+I am going forward 20 cm
+Sonar dist 123
+I think I am at (137.57571918131464, 93.28704118514078), orientation 90.72991249587331 degrees
+I am going to turn -1.0552809367898874 degrees
+I think I am at (137.57571918131464, 93.28704118514078), orientation 90.72991249587331 degrees
+I am going forward 20 cm
+Sonar dist 104
+I think I am at (137.38155291512751, 113.01879291647431), orientation 89.78780845427362 degrees
+I am going to turn -0.43226344828843494 degrees
+I think I am at (137.38155291512751, 113.01879291647431), orientation 89.78780845427362 degrees
+I am going forward 20 cm
+Sonar dist 85
+I think I am at (137.8207731793984, 132.77703999475003), orientation 89.3456014061028 degrees
+I am going to turn 0.3628600130859993 degrees
+I think I am at (137.8207731793984, 132.77703999475003), orientation 89.3456014061028 degrees
+I am going forward 20 cm
+Sonar dist 66
+I think I am at (138.08863536282968, 152.68524216463362), orientation 89.65187955556637 degrees
+I am going to turn 0.6797205623712091 degrees
+I think I am at (138.08863536282968, 152.68524216463362), orientation 89.65187955556637 degrees
+I am going forward 15.315014325277657 cm
+Sonar dist 52
+At-waypoint location: {self.log} 
+
+I think I am at (137.82300389382746, 167.9926618888971), orientation 90.04862446031196 degrees
+I am going to turn 89.93372693481977 degrees
+I think I am at (137.82300389382746, 167.9926618888971), orientation 90.04862446031196 degrees
+I am going forward 20 cm
+Sonar dist 25
+I think I am at (116.4168256616661, 167.96551544027054), orientation 179.62273900181327 degrees
+I am going to turn -0.44021032056056353 degrees
+I think I am at (116.4168256616661, 167.96551544027054), orientation 179.62273900181327 degrees
+I am going forward 2.4170716712061924 cm
+Sonar dist 23
+I think I am at (110.1524125527632, 168.0421675696029), orientation 178.5674548869296 degrees
+I am going to turn -179.1953618756375 degrees
+I think I am at (110.1524125527632, 168.0421675696029), orientation 178.5674548869296 degrees
+I am going forward 3.8478185076820406 cm
+Sonar dist 59
+I think I am at (110.77872949996721, 167.69012904747336), orientation 0.2452556811367435 degrees
+I am going to turn 5.249419954762999 degrees
+I think I am at (110.77872949996721, 167.69012904747336), orientation 0.2452556811367435 degrees
+I am going forward 3.236140238246984 cm
+Sonar dist 57
+At-waypoint location: {self.log} 
+
+I think I am at (113.76859166987867, 167.90935960054662), orientation 6.0723533282416104 degrees
+I am going to turn -95.91434131254276 degrees
+I think I am at (113.76859166987867, 167.90935960054662), orientation 6.0723533282416104 degrees
+I am going forward 20 cm
+Sonar dist 133
+I think I am at (113.8650902775556, 147.95333203977933), orientation -89.96464309718348 degrees
+I am going to turn 0.0855085157476975 degrees
+I think I am at (113.8650902775556, 147.95333203977933), orientation -89.96464309718348 degrees
+I am going forward 20 cm
+Sonar dist 115
+I think I am at (113.74561409272296, 127.97311839053818), orientation -90.18155610745569 degrees
+I am going to turn 0.5130103412411011 degrees
+I think I am at (113.74561409272296, 127.97311839053818), orientation -90.18155610745569 degrees
+I am going forward 20 cm
+Sonar dist 96
+I think I am at (113.51661949362351, 108.00007215039705), orientation -89.99703862472593 degrees
+I am going to turn 1.1508651100033158 degrees
+I think I am at (113.51661949362351, 108.00007215039705), orientation -89.99703862472593 degrees
+I am going forward 20 cm
+Sonar dist 77
+I think I am at (114.221998907881, 88.05334450031732), orientation -88.82656803471781 degrees
+I am going to turn -4.30835056969915 degrees
+I think I am at (114.221998907881, 88.05334450031732), orientation -88.82656803471781 degrees
+I am going forward 4.059419312334344 cm
+Sonar dist 74
+At-waypoint location: {self.log} 
+
+I think I am at (113.80933166681115, 84.05328261385075), orientation -93.49488990929544 degrees
+I am going to turn -86.40269700483167 degrees
+I think I am at (113.80933166681115, 84.05328261385075), orientation -93.49488990929544 degrees
+I am going forward 20 cm
+Sonar dist 113
+I think I am at (93.71733203919317, 84.20100341812878), orientation -180.33361024839348 degrees
+I am going to turn 1.5186068457400654 degrees
+I think I am at (93.71733203919317, 84.20100341812878), orientation -180.33361024839348 degrees
+I am going forward 9.719410698907083 cm
+Sonar dist 103
+At-waypoint location: {self.log} 
+
+I think I am at (83.74830888370235, 84.30939195101793), orientation -179.50882923584936 degrees
+I am going to turn 89.77435854756446 degrees
+I think I am at (83.74830888370235, 84.30939195101793), orientation -179.50882923584936 degrees
+I am going forward 20 cm
+Sonar dist 50
+I think I am at (84.25399802997067, 64.14904583985974), orientation -89.36243799047315 degrees
+I am going to turn -1.0637158420028896 degrees
+I think I am at (84.25399802997067, 64.14904583985974), orientation -89.36243799047315 degrees
+I am going forward 20 cm
+Sonar dist 31
+I think I am at (84.71492847969506, 44.088618123146816), orientation -90.27346733537996 degrees
+I am going to turn -2.6315215089955375 degrees
+I think I am at (84.71492847969506, 44.088618123146816), orientation -90.27346733537996 degrees
+I am going forward 14.1067460227701 cm
+Sonar dist 20
+I think I am at (85.9571140182143, 29.51757825050331), orientation -91.46973921624577 degrees
+I am going to turn -102.37742112081955 degrees
+I think I am at (85.9571140182143, 29.51757825050331), orientation -91.46973921624577 degrees
+I am going forward 2.0156949235135673 cm
+Sonar dist 261
+At-waypoint location: {self.log} 
+
