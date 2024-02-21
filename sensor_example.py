@@ -71,6 +71,7 @@ class Robot:
     def navigate(self, x_targ, y_targ):
         while self.step([x_targ,y_targ]):
             self.recalc_sensor()
+        self.recalc_sensor()
         print("At-waypoint location:", self.loc)
         logger.info("At-waypoint location: {self.log} \n")
         
@@ -78,7 +79,7 @@ class Robot:
         # Sonar measure result\
         while True:
             try:
-                d_measure = BP.get_sensor(SONAR_PORT) + 6
+                d_measure = BP.get_sensor(SONAR_PORT) + 5
                 break
             except:
                 print("Sonar error")
@@ -167,7 +168,7 @@ class Robot:
 if __name__ == "__main__":
     try:
         BP.set_sensor_type(SONAR_PORT, BP.SENSOR_TYPE.NXT_ULTRASONIC)
-        visualizer = Visualize(0.05, deg_to_rad(0.5), deg_to_rad(1))
+        visualizer = Visualize(2, deg_to_rad(2), deg_to_rad(3.9))
         terrain = myMap(visualizer)
         terrain.draw()
         robot = Robot(visualizer, terrain)

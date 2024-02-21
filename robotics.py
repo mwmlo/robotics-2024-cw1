@@ -8,10 +8,36 @@ import numpy as np
 from Constants import *
 from Utils import deg_to_rad, rad_to_deg, direction, ang_diff
 from Visualize import Visualize
-from likelihood import wall_distance, likelihood
 from mcl_resample import normalize, resample
 from Map import Map, myMap
 
+den_lim = 0.001
+
+def wall_distance(x, y, theta, terrain: Map):
+    dmin = MAX_TRUE_D
+    for (x1, y1, x2, y2) in terrain.walls:
+        dy = y2 - y1
+        dx = x2 - x1
+        denom = dy * np.cos(theta) - dx * np.sin(theta)
+        if denom > den_lim or denom < -den_lim:
+            d = (dy * (x1 - x) - dx * (y1 - y)) / denom
+            if d > 0 and d < dmin:
+                # check if this wall is valid
+                cross = np.array([x + d*np.cos(theta), y + d*np.sin(theta)])
+                vec1 = np.array([x1, y1]) - cross
+                vec2 = np.array([x2, y2]) - cross
+                r = vec2 * vec1
+                #print("r: ", r)
+                if r[0] < 0 or r[1] < 0:
+                    # replace the result if current wall is closer
+                    dmin = d
+
+    return dmin
+
+
+def likelihood(d_measure, d_true):
+    p = - pow(d_measure - d_true, 2) / (2 * pow(LIKELIHOOD_STD, 2))
+    return np.exp(p) + LIKELIHOOD_K
 
 class Robot:
     def __init__(self, visualizer: Visualize, terrain: Map):
@@ -41,13 +67,13 @@ class Robot:
                 i += 1
             else:
                 self.v.particles.pop(i)
-        dts = np.array(dts)
-        dt_mean = np.mean(dts)
+        dt_mean = np.mean(np.array(dts))
+        print("dtm,",dt_mean)
         d_measure = 0
         rep = 0
         while rep < 4:
             try:
-                d_measure = BP.get_sensor(SONAR_PORT) + 6
+                d_measure = BP.get_sensor(SONAR_PORT) + 4.5
             except:
                 print(">>Sonar error")
                 time.sleep(0.5)
@@ -62,7 +88,7 @@ class Robot:
             print("outlier error")
         
         print(f"Sonar dist {d_measure}", f"Mean std true {dt_mean}")
-        for i in range(len(self.v.particles)):
+        for i in range(self.v.n_particles):
             self.v.particles[i].weight *= likelihood(d_measure, dts[i])
         
         normalize(self.v)
@@ -162,7 +188,7 @@ if __name__ == "__main__":
     try:
         
         BP.set_sensor_type(SONAR_PORT, BP.SENSOR_TYPE.NXT_ULTRASONIC)
-        visualizer = Visualize(0.05, deg_to_rad(0.5), deg_to_rad(1))
+        visualizer = Visualize(2, deg_to_rad(2), deg_to_rad(3.9))
         terrain = myMap(visualizer)
         terrain.draw()
         robot = Robot(visualizer, terrain)
