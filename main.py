@@ -43,9 +43,8 @@ class Robot:
         # move in 20cm steps
         if distance > 20:
             self.forward(20)
-            time.sleep(0.5)
-            return True
-        self.forward(distance)
+        else:
+            self.forward(distance)
         time.sleep(0.5)
         return True
 
