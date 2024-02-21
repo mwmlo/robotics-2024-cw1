@@ -49,7 +49,7 @@ class Visualize:
         locs = np.array([[p.x, p.y, p.theta] for p in self.particles])
         weights = np.array([[p.weight] for p in self.particles])
         s = locs * weights
-        print("estimate location", np.sum(s, axis=0))
+        #print("estimate location", np.sum(s, axis=0))
         return np.sum(s, axis=0)
 
     def turn(self, ang):

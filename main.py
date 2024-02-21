@@ -51,6 +51,7 @@ class Robot:
         while self.step([x_targ,y_targ]):
             self.recalc_sensor()
         self.recalc_sensor()
+        print("weightpoint estimate:", self.loc)
         
     def recalc_sensor(self):
         # Sonar measure result\
@@ -65,7 +66,7 @@ class Robot:
         print(f"Sonar dist {d_measure}")
         for p in self.v.particles:
             if not self.terrain.is_particle_in(p):
-                p.weight = 0.01
+                p.weight *= 0.01
             p.weight *= self.calculate_likelihood(p.x, p.y, p.theta, d_measure)
         normalize(self.v)
         resample(self.v)
@@ -73,6 +74,8 @@ class Robot:
         
 
     def turn(self, ang):
+        print("I think I am at", self.loc)
+        print("I am going to turn", ang)
         angle = ang * TURN_PER_DEG
         BP.set_motor_limits(RIGHT_WHEEL_PORT, POWER_LIMIT, TURN_DPS)
         BP.set_motor_limits(LEFT_WHEEL_PORT, POWER_LIMIT, TURN_DPS)
@@ -129,7 +132,6 @@ class Robot:
         self.loc = np.array([x,y,0])
         for (x,y) in waypoints[1:]:
             print(f"Heading towards point: ({x}, {y})")
-            print("I think I am at", self.loc)
             self.navigate(x, y)
 
 
@@ -137,7 +139,7 @@ if __name__ == "__main__":
     try:
         
         BP.set_sensor_type(SONAR_PORT, BP.SENSOR_TYPE.NXT_ULTRASONIC)
-        visualizer = Visualize(0.2, deg_to_rad(0.5), deg_to_rad(2))
+        visualizer = Visualize(0.05, deg_to_rad(0.5), deg_to_rad(1))
         terrain = myMap(visualizer)
         terrain.draw()
         robot = Robot(visualizer, terrain)
