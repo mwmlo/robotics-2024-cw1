@@ -1,12 +1,19 @@
 # A Map class containing walls
+from Particle import Particle
+
+
 class Map:
 
     def __init__(self, visualise):
         self.walls = []
+        self.areas = []
         self.visualise = visualise
 
     def add_wall(self, wall):
         self.walls.append(wall)
+
+    def add_area(self, x0, x1, y0, y1):
+        self.areas.append((x0, x1, y0, y1))
 
     def clear(self):
         self.walls = []
@@ -14,6 +21,14 @@ class Map:
     def draw(self):
         for wall in self.walls:
             self.visualise.draw_line(wall)
+
+    def is_particle_in(self, particle: Particle):
+        for area in self.areas:
+            if (min(area[0], area[1]) <= particle.x <= max(area[0], area[1])) and (
+                    min(area[2], area[3]) <= particle.y <= max(area[2], area[3])):
+                return True
+
+        return False
 
 
 def myMap(visualise):
