@@ -55,7 +55,7 @@ class Robot:
 
             time.sleep(interval)
         
-    def recalc_sensor(self):
+    def recalc_sensor(self, cont=True):
         # Sonar measure result\
         dts = []
         i = 0
@@ -84,11 +84,16 @@ class Robot:
             rep += 1
         if rep >= 3:
             print("outlier error")
-            #self.turn(5)
-            #time.sleep(0.1)
-            #self.turn(-5)
+            if cont:
+                self.turn(7)
+                self.recalc_sensor(cont=False)
+                time.sleep(0.1)
+                self.turn(-14)
+                self.recalc_sensor(cont=False)
+                self.turn(7)
+                self.recalc_sensor(cont=False)
         print(f"Sonar dist {d_measure}", f"Mean std true {dt_mean}")
-        for i in range(self.v.n_particles):
+        for i in range(len(self.v.particles)):
             self.v.particles[i].weight *= likelihood(d_measure, dts[i])
         
         normalize(self.v)
