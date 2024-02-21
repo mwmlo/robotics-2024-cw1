@@ -50,6 +50,7 @@ class Robot:
     def navigate(self, x_targ, y_targ):
         while self.step([x_targ,y_targ]):
             self.recalc_sensor()
+        self.recalc_sensor()
         
     def recalc_sensor(self):
         # Sonar measure result\
@@ -63,6 +64,8 @@ class Robot:
             
         print(f"Sonar dist {d_measure}")
         for p in self.v.particles:
+            if not self.terrain.is_particle_in(p):
+                p.weight = 0.01
             p.weight *= self.calculate_likelihood(p.x, p.y, p.theta, d_measure)
         normalize(self.v)
         resample(self.v)
@@ -70,7 +73,8 @@ class Robot:
         
 
     def turn(self, ang):
-        print(ang)
+        print("I think I am at", self.loc)
+        print("I am going to turn", ang)
         angle = ang * TURN_PER_DEG
         BP.set_motor_limits(RIGHT_WHEEL_PORT, POWER_LIMIT, TURN_DPS)
         BP.set_motor_limits(LEFT_WHEEL_PORT, POWER_LIMIT, TURN_DPS)
