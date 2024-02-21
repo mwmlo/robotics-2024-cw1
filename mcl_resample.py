@@ -16,8 +16,8 @@ def resample(visualizer):
         cumulative_weights.append(curr_total)
     # Resample particles based on cumulative weights
     resampled_particles = []
-    new_w = 1/len(visualizer.particles)
-    for _ in range(len(visualizer.particles)):
+    new_w = 1/visualizer.n_particles
+    for _ in range(visualizer.n_particles):
         sample_num = random.uniform(0, 1)
         # See where the random number intersects with the array values
         for i in range(len(cumulative_weights) - 1):

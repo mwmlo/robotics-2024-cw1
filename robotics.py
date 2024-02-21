@@ -6,7 +6,6 @@ import time  # import the time library for the sleep function
 import numpy as np
 
 from Constants import *
-BP.reset_all()
 from Utils import deg_to_rad, rad_to_deg, direction, ang_diff
 from Visualize import Visualize
 from likelihood import wall_distance, likelihood
@@ -167,9 +166,9 @@ if __name__ == "__main__":
         terrain = myMap(visualizer)
         terrain.draw()
         robot = Robot(visualizer, terrain)
-        #waypoints = [(84, 30), (180, 30), (180, 54), (138, 54),
-        #             (138, 168), (114, 168), (114, 84), (84, 84), (84, 30)]
-        waypoints = [(20, 20), (20, 50), (20, 80), (10, 80)]
+        waypoints = [(84, 30), (180, 30), (180, 54), (138, 54),
+                    (138, 168), (114, 168), (114, 84), (84, 84), (84, 30)]
+        #waypoints = [(160, 20), (190, 20)]
         #visualizer.particles_gen(NUMBER_PARTICLES, 0, 0, 0)
         #robot.turn(90)
         robot.localize(waypoints)

@@ -18,6 +18,7 @@ class Visualize:
 
     def particles_gen(self, n_particles, x, y, theta):
         # generate list of particles
+        self.n_particles = n_particles
         self.particles = [Particle(x, y, theta, 1 / n_particles) for _ in range(n_particles)]
         
     @staticmethod
