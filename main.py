@@ -1,18 +1,29 @@
-from __future__ import division
-from __future__ import print_function
+#!/usr/bin/env python
+#
+# https://www.dexterindustries.com/BrickPi/
+# https://github.com/DexterInd/BrickPi3
+#
+# Copyright (c) 2016 Dexter Industries
+# Released under the MIT license (http://choosealicense.com/licenses/mit/).
+# For more information, see https://github.com/DexterInd/BrickPi3/blob/master/LICENSE.md
+#
+# This code is an example for reading an NXT ultrasonic sensor connected to PORT_1 of the BrickPi3
+# 
+# Hardware: Connect an NXT ultrasonic sensor to BrickPi3 Port 1.
+# 
+# Results:  When you run this program, you should see the distance in CM.
 
-import time  # import the time library for the sleep function
+from __future__ import print_function # use python 3 syntax but make it compatible with python 2
+from __future__ import division       #                           ''
 
-# import brickpi3  # import the BrickPi3 drivers
 import numpy as np
-
+import time     # import the time library for the sleep function
 from Constants import *
-from Utils import deg_to_rad, direction, ang_diff
+from Utils import deg_to_rad, direction, ang_diff, rad_to_deg
 from Visualize import Visualize
 from likelihood import wall_distance, likelihood
 from mcl_resample import normalize, resample
 from Map import Map, myMap
-
 
 class Robot:
     def __init__(self, visualizer: Visualize, terrain: Map):
@@ -52,7 +63,7 @@ class Robot:
     def navigate(self, x_targ, y_targ):
         while self.step([x_targ,y_targ]):
             self.recalc_sensor()
-        print("weightpoint estimate:", self.loc)
+        print("At-waypoint location:", self.loc)
         
     def recalc_sensor(self):
         # Sonar measure result\
@@ -75,8 +86,8 @@ class Robot:
         
 
     def turn(self, ang):
-        print("I think I am at", self.loc)
-        print("I am going to turn", ang)
+        print(f"I think I am at ({self.loc[0]}, {self.loc[1]}), orientation {rad_to_deg(self.loc[2])} degrees")
+        print(f"I am going to turn {ang} degrees")
         angle = ang * TURN_PER_DEG
         BP.set_motor_limits(RIGHT_WHEEL_PORT, POWER_LIMIT, TURN_DPS)
         BP.set_motor_limits(LEFT_WHEEL_PORT, POWER_LIMIT, TURN_DPS)
@@ -134,11 +145,9 @@ class Robot:
         for (x,y) in waypoints[1:]:
             print(f"Heading towards point: ({x}, {y})")
             self.navigate(x, y)
-
-
+            
 if __name__ == "__main__":
     try:
-        
         BP.set_sensor_type(SONAR_PORT, BP.SENSOR_TYPE.NXT_ULTRASONIC)
         visualizer = Visualize(0.05, deg_to_rad(0.5), deg_to_rad(1))
         terrain = myMap(visualizer)
@@ -149,6 +158,14 @@ if __name__ == "__main__":
         #visualizer.particles_gen(NUMBER_PARTICLES, 0, 0, 0)
         #robot.turn(90)
         robot.localize(waypoints)
+        #for _ in range(10):
+        #    try:
+        #        value = BP.get_sensor(SONAR_PORT)
+        #        print(value)
+        #    except brickpi3.SensorError as error:
+        #        print(error)
+
+        #    time.sleep(0.02)  # delay for 0.02 seconds (20ms) to reduce the Raspberry Pi CPU load.
 
     except KeyboardInterrupt:  # program gets interrupted by Ctrl+C on the keyboard.
         BP.reset_all()

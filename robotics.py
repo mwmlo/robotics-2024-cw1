@@ -2,11 +2,11 @@ from __future__ import division
 from __future__ import print_function
 
 import time  # import the time library for the sleep function
-
-# import brickpi3  # import the BrickPi3 drivers
+#import brickpi3  # import the BrickPi3 drivers
 import numpy as np
 
 from Constants import *
+BP.reset_all()
 from Utils import deg_to_rad, rad_to_deg, direction, ang_diff
 from Visualize import Visualize
 from likelihood import wall_distance, likelihood
@@ -43,21 +43,26 @@ class Robot:
             else:
                 self.v.particles.pop(i)
         dts = np.array(dts)
-        dt_mean, dt_std = np.mean(dts), np.std(dts)
+        dt_mean = np.mean(dts)
         d_measure = 0
-        for rep in range(10):
+        rep = 0
+        while rep < 4:
             try:
                 d_measure = BP.get_sensor(SONAR_PORT) + 6
             except:
                 print(">>Sonar error")
                 time.sleep(0.5)
-            z_score = np.abs(d_measure-dt_mean)/dt_std
-            if z_score < SONAR_OUTSCORE:
+            #z_score = np.abs(d_measure-dt_mean)/dt_std
+            if np.abs(dt_mean - d_measure) < SONAR_OUTSCORE:
                 print("Sonar accepted")
                 break
-            print(">>Sonar outlier")
+            print(">>Sonar outlier", rep)
+            time.sleep(0.5)
+            rep += 1
+        if rep >= 3:
+            print("outlier error")
         
-        print(f"Sonar dist {d_measure}", f"Mean std true {dt_mean}, {dt_std}")
+        print(f"Sonar dist {d_measure}", f"Mean std true {dt_mean}")
         for i in range(len(self.v.particles)):
             self.v.particles[i].weight *= likelihood(d_measure, dts[i])
         
@@ -88,12 +93,11 @@ class Robot:
     def navigate(self, x_targ, y_targ):
         while self.step([x_targ,y_targ]):
             self.recalc_sensor()
-        print("weightpoint estimate:", self.loc[:2], rad_to_deg(self.loc[2]))
+        print("At-waypoint estimate:", self.loc[:2], rad_to_deg(self.loc[2]))
         
 
     def turn(self, ang):
-        print("I think I am at", self.loc)
-        print("I am going to turn", ang)
+        print(f"I think I am at ({self.loc[0]}, {self.loc[1]}), orientation {rad_to_deg(self.loc[2])} degrees;", f"I am going to turn {ang} degrees")
         angle = ang * TURN_PER_DEG
         BP.set_motor_limits(RIGHT_WHEEL_PORT, POWER_LIMIT, TURN_DPS)
         BP.set_motor_limits(LEFT_WHEEL_PORT, POWER_LIMIT, TURN_DPS)
@@ -163,9 +167,9 @@ if __name__ == "__main__":
         terrain = myMap(visualizer)
         terrain.draw()
         robot = Robot(visualizer, terrain)
-        waypoints = [(84, 30), (180, 30), (180, 54), (138, 54),
-                     (138, 168), (114, 168), (114, 84), (84, 84), (84, 30)]
-        #waypoints = [(20, 20), (20, 50), (20, 80), (10, 80)]
+        #waypoints = [(84, 30), (180, 30), (180, 54), (138, 54),
+        #             (138, 168), (114, 168), (114, 84), (84, 84), (84, 30)]
+        waypoints = [(20, 20), (20, 50), (20, 80), (10, 80)]
         #visualizer.particles_gen(NUMBER_PARTICLES, 0, 0, 0)
         #robot.turn(90)
         robot.localize(waypoints)

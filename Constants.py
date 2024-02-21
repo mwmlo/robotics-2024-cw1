@@ -1,10 +1,12 @@
 import brickpi3
 
 BP = brickpi3.BrickPi3()
+BP.reset_all()
+print("BP created and reset", BP)
 
 RIGHT_WHEEL_PORT = BP.PORT_A
 LEFT_WHEEL_PORT = BP.PORT_D
-SONAR_PORT = BP.PORT_4
+SONAR_PORT = BP.PORT_3
 
 POWER_LIMIT = 70
 MAX_DPS = 360
