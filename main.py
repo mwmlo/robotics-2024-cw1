@@ -73,8 +73,6 @@ class Robot:
         
 
     def turn(self, ang):
-        print("I think I am at", self.loc)
-        print("I am going to turn", ang)
         angle = ang * TURN_PER_DEG
         BP.set_motor_limits(RIGHT_WHEEL_PORT, POWER_LIMIT, TURN_DPS)
         BP.set_motor_limits(LEFT_WHEEL_PORT, POWER_LIMIT, TURN_DPS)
@@ -131,6 +129,7 @@ class Robot:
         self.loc = np.array([x,y,0])
         for (x,y) in waypoints[1:]:
             print(f"Heading towards point: ({x}, {y})")
+            print("I think I am at", self.loc)
             self.navigate(x, y)
 
 
@@ -138,7 +137,7 @@ if __name__ == "__main__":
     try:
         
         BP.set_sensor_type(SONAR_PORT, BP.SENSOR_TYPE.NXT_ULTRASONIC)
-        visualizer = Visualize(0.2, deg_to_rad(0.5), deg_to_rad(1.5))
+        visualizer = Visualize(0.2, deg_to_rad(0.5), deg_to_rad(2))
         terrain = myMap(visualizer)
         terrain.draw()
         robot = Robot(visualizer, terrain)
