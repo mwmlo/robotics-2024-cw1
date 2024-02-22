@@ -67,7 +67,8 @@ class Robot:
                 i += 1
             else:
                 self.v.particles.pop(i)
-        dt_mean = np.mean(np.array(dts))
+        dta = np.array(dts)
+        dt_mean, dt_std = np.mean(dta), np.std(dta)
         d_measure = 0
         rep = 0
         while rep < 4:
@@ -77,17 +78,16 @@ class Robot:
                 print(">>Sonar error")
                 time.sleep(0.5)
             #z_score = np.abs(d_measure-dt_mean)/dt_std
-            if np.abs(dt_mean - d_measure) < SONAR_OUTSCORE:
+            if np.abs(dt_mean - d_measure) < SONAR_OUTSCORE+2*dt_std:
                 print("Sonar accepted")
                 break
-            time.sleep(0.5)
+            time.sleep(0.2)
             rep += 1
         if rep >= 3:
             print("outlier error")
             if cont:
                 self.turn(7)
                 self.recalc_sensor(cont=False)
-                time.sleep(0.1)
                 self.turn(-14)
                 self.recalc_sensor(cont=False)
                 self.turn(7)
